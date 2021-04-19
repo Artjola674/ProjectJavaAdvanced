@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/template.xhtml">
+
+		<ui:define name="content">
+
+			<div class="datatable">
+				<h:form id="form">
+
+					<p:outputLabel value="Category " for="category" />
+					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
+						filter="true" filterMatchMode="startsWith" >
+						<p:ajax listener="#{dishManagedBean.getDishNames()}"  />
+						<f:selectItem itemLabel="Select One" itemValue=""/>
+						<f:selectItems value="#{dishManagedBean.categories}" />
+						
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Dish Name " for="dishName" />
+					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishName}"
+						filter="true" filterMatchMode="startsWith">
+						<p:ajax update="dishName" />
+						<f:selectItem itemLabel="Select One" itemValue=""/>
+						<f:selectItems value="#{dishManagedBean.names}" />
+
+					</p:selectOneMenu>
+
+					<p:commandButton label="Search" value="Search"
+						action="#{dishManagedBean.search}" update="dataTable"
+						immediate="true">
+					</p:commandButton>
+
+</h:form>
+					<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
+						var="dish" sortBy="#{dish.dishName}" paginator="true" rows="10"
+						styleClass="p-mt-2">
+
+						<p:column headerText="Dish Id">
+							<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Category">
+							<p:outputLabel value="#{dish.category}"></p:outputLabel>
+						</p:column>
+
+
+						<p:column headerText="Dish Name">
+							<p:outputLabel value="#{dish.dishName}"></p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Description">
+							<p:outputLabel value="#{dish.description}"></p:outputLabel>
+						</p:column>
+						
+						<p:column headerText="Price">
+							<p:outputLabel value="#{dish.price} $"></p:outputLabel>
+						</p:column>
+						
+						<p:column headerText="Created By">
+							<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
+						</p:column>
+						
+						<p:column headerText="Picture">
+							<p:graphicImage  library="scr/main/resources" name="mycatering/#{dish.picture}"/>
+						</p:column>
+						
+						<p:column headerText="Last Update">
+							<p:outputLabel value="#{dish.lastUpdate}">
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="Delete">
+							<p:button value="Delete"
+								>
+							</p:button>
+						</p:column>
+						
+						<p:column headerText="Disable/Enable">
+							<p:button value="Disable"
+								>
+							</p:button>
+						</p:column>
+
+					</p:dataTable>
+
+				
+
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

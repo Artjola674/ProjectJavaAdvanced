@@ -8,6 +8,20 @@
 <h:body>
 	<ui:composition template="/template/template.xhtml">
 		<ui:define name="content">
+			
+			<div class="card">
+    <h:form>
+        <p:growl id="messages" showDetail="true"/>
+
+        <p:menuButton value="Dish">
+            <p:menuitem value="Add a new dish" action="" ajax="false" update="messages" icon="pi pi-save"/>
+            <p:menuitem value="Show all dishes" action="" update="messages" icon="pi pi-refresh"/>
+            <p:menuitem value="Show only available dishes" action="" update="messages" icon="pi pi-times"/>
+            <p:divider/>
+            <p:menuitem value="Website" url="http://www.primefaces.org" icon="pi pi-external-link"/>
+        </p:menuButton>
+    </h:form>
+</div>
 
 		</ui:define>
 	</ui:composition>
