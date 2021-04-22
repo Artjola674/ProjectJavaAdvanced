@@ -1,6 +1,5 @@
 package com.ikubinfo.primefaces.managedbean.admin;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,10 +13,7 @@ import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class dishManagedBean implements Serializable{
-	
-	private static final long serialVersionUID = -7853456626370075836L;
-
+public class AvailableDishManagedBean {
 	@ManagedProperty(value = "#{dishService}")
 	private DishService dishService;
 	
@@ -25,6 +21,7 @@ public class dishManagedBean implements Serializable{
 	private Messages messages;
 	
 	private List<Dish> dishes;
+	private int dishId;
 	private String category;
 	private String dishName;
 	private List<String> categories;
@@ -32,17 +29,23 @@ public class dishManagedBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		dishes = dishService.getAllDishes(null,null);
-		categories = dishService.getCategories();
-		names = dishService.getDishNames(null);
+		dishes = dishService.getAllDishes(null,null,true);
+		categories = dishService.getCategories(true);
+		names = dishService.getDishNames(null,true);
 	}
 	
 	public void getDishNames() {
-		names = dishService.getDishNames(category);
+		names = dishService.getDishNames(category,true);
 	}
+	
 	public void search() {
-		System.out.println(category+ dishName);
-		dishes = dishService.getAllDishes(category, dishName);
+		dishes = dishService.getAllDishes(category,dishName,true);
+	}
+	
+	public void disable() {
+		System.out.println("Disable");
+		dishService.availability(dishId, false);
+		dishes = dishService.getAllDishes(category,dishName,true);
 	}
 
 	public DishService getDishService() {
@@ -67,6 +70,14 @@ public class dishManagedBean implements Serializable{
 
 	public void setDishes(List<Dish> dishes) {
 		this.dishes = dishes;
+	}
+
+	public int getDishId() {
+		return dishId;
+	}
+
+	public void setDishId(int dishId) {
+		this.dishId = dishId;
 	}
 
 	public String getCategory() {
@@ -100,7 +111,6 @@ public class dishManagedBean implements Serializable{
 	public void setNames(List<String> names) {
 		this.names = names;
 	}
-	
 	
 	
 }

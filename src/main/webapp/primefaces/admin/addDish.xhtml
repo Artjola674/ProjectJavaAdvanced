@@ -7,55 +7,55 @@
 </h:head>
 <h:body>
 	<ui:composition template="/template/template.xhtml">
-		
-	
-		<ui:define name="content">
 
-			<p:growl id="growl"/>
-			<center>
-				<h:form>
-					<h2> Add a new dish</h2>
+
+		<ui:define name="content">
+		<div>
+		
+			<p:growl id="growl" showDetail="true"/>
+				<h:form enctype="multipart/form-data">
+					<h2>Add a new dish</h2>
 					<p:outputLabel for="category" value="Category"></p:outputLabel>
 					<p:inputText id="category" required="true"
 						value="#{addDishManagedBean.dish.category}"></p:inputText>
 					<br></br>
 					<br></br>
-					
-					<p:growl id="growl" showDetail="true" />
+
 					<p:outputLabel for="dishName" value="Name"></p:outputLabel>
 					<p:inputText id="dishName" required="true"
 						value="#{addDishManagedBean.dish.dishName}"></p:inputText>
 					<br></br>
 					<br></br>
-					
+
 					<p:outputLabel for="description" value="Description"></p:outputLabel>
 					<p:inputText id="description" required="true"
 						value="#{addDishManagedBean.dish.description}"></p:inputText>
 					<br></br>
 					<br></br>
-					
+
 					<p:outputLabel for="price" value="Price"></p:outputLabel>
 					<p:inputText id="price" required="true"
 						value="#{addDishManagedBean.dish.price}">
-						<f:convertNumber minFractionDigits = "2" />
+						<f:convertNumber minFractionDigits="2" />
 					</p:inputText>
 					<br></br>
 					<br></br>
-					
-					<p:outputLabel for="picture" value="Picture Name"></p:outputLabel>
+
+					<p:outputLabel value="Picture" for="picture"> </p:outputLabel>
 					<p:inputText id="picture" required="true"
 						value="#{addDishManagedBean.dish.picture}">
 					</p:inputText>
 					<br></br>
 					<br></br>
-					
-					<p:commandButton value="Save" action="#{addDishManagedBean.insertDish}"
-					update="growl @this" icon="pi pi-save">
+
+					<p:commandButton value="Save"
+						action="#{addDishManagedBean.insertDish}" update="growl @this"
+						icon="pi pi-save">
 					</p:commandButton>
 				</h:form>
-			</center>
-
-
+			
+		</div>
+			
 		</ui:define>
 	</ui:composition>
 </h:body>

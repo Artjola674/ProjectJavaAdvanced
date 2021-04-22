@@ -11,22 +11,23 @@
 		<ui:define name="content">
 
 			<div class="datatable">
+				<p:growl id="growl"></p:growl>
 				<h:form id="form">
 
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
-						filter="true" filterMatchMode="startsWith" >
-						<p:ajax listener="#{dishManagedBean.getDishNames()}"  />
-						<f:selectItem itemLabel="Select One" itemValue=""/>
+						filter="true" filterMatchMode="startsWith">
+						<p:ajax listener="#{dishManagedBean.getDishNames()}" />
+						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems value="#{dishManagedBean.categories}" />
-						
+
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Dish Name " for="dishName" />
 					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishName}"
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax update="dishName" />
-						<f:selectItem itemLabel="Select One" itemValue=""/>
+						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems value="#{dishManagedBean.names}" />
 
 					</p:selectOneMenu>
@@ -36,61 +37,137 @@
 						immediate="true">
 					</p:commandButton>
 
-</h:form>
-					<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
-						var="dish" sortBy="#{dish.dishName}" paginator="true" rows="10"
-						styleClass="p-mt-2">
+				</h:form>
+				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
+					var="dish" paginator="true" rows="10" styleClass="p-mt-2"
+					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
+					sortOrder="ascending">
 
-						<p:column headerText="Dish Id">
-							<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
-						</p:column>
+					<p:column headerText="Dish Id">
+						<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
+					</p:column>
 
-						<p:column headerText="Category">
-							<p:outputLabel value="#{dish.category}"></p:outputLabel>
-						</p:column>
+					<p:column headerText="Category">
+						<p:outputLabel value="#{dish.category}"></p:outputLabel>
+					</p:column>
 
 
-						<p:column headerText="Dish Name">
-							<p:outputLabel value="#{dish.dishName}"></p:outputLabel>
-						</p:column>
+					<p:column headerText="Dish Name">
+						<p:outputLabel value="#{dish.dishName}"></p:outputLabel>
+					</p:column>
 
-						<p:column headerText="Description">
-							<p:outputLabel value="#{dish.description}"></p:outputLabel>
-						</p:column>
-						
-						<p:column headerText="Price">
-							<p:outputLabel value="#{dish.price} $"></p:outputLabel>
-						</p:column>
-						
-						<p:column headerText="Created By">
-							<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
-						</p:column>
-						
-						<p:column headerText="Picture">
-							<p:graphicImage  library="scr/main/resources" name="mycatering/#{dish.picture}"/>
-						</p:column>
-						
-						<p:column headerText="Last Update">
-							<p:outputLabel value="#{dish.lastUpdate}">
-								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					<p:column headerText="Description">
+						<p:outputLabel value="#{dish.description}"></p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Price">
+						<p:outputLabel value="#{dish.price} $"></p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Created By">
+						<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Picture">
+						<p:graphicImage library="scr/main/resources"
+							name="mycatering/#{dish.picture}" />
+					</p:column>
+
+					<p:column headerText="Last Update">
+						<p:outputLabel value="#{dish.lastUpdate}">
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						</p:outputLabel>
+					</p:column>
+
+					<p:column headerText="Disable">
+						<p:commandButton value="Disable" disabled="#{!dish.availability}"
+							action="#{dishManagedBean.disable}" immediate="true"
+							update="dataTable">
+							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
+								value="#{dish}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Enable">
+						<p:commandButton value="Enable" disabled="#{dish.availability}"
+							action="#{dishManagedBean.enable}" immediate="true"
+							update="dataTable">
+							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
+								value="#{dish}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column headerText="Delete">
+						<p:commandButton value="Delete" immediate="true"
+							action="#{dishManagedBean.delete}"
+							update="dataTable
+							 growl">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
+							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
+								value="#{dish}" />
+						</p:commandButton>
+
+
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
+					</p:column>
+
+					<p:column headerText="Edit">
+						<p:commandButton value="Edit" update="updateDialog"
+							process="@this" oncomplete="PF('EditDialog').show();">
+
+							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
+								value="#{dish}" />
+
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+
+				<p:dialog header="Edit Dish" id="updateDialog"
+					widgetVar="EditDialog" modal="true">
+					<h:form id="dialogForm">
+
+						<h:panelGrid columns="2">
+							<p:outputLabel for="category" value="Category"></p:outputLabel>
+							<p:inputText id="category" required="true"
+								value="#{dishManagedBean.dish.category}"></p:inputText>
+
+							<p:outputLabel for="dishName" value="Name"></p:outputLabel>
+							<p:inputText id="dishName" required="true"
+								value="#{dishManagedBean.dish.dishName}"></p:inputText>
+
+							<p:outputLabel for="description" value="Description"></p:outputLabel>
+							<p:inputText id="description" required="true"
+								value="#{dishManagedBean.dish.description}"></p:inputText>
+
+							<p:outputLabel for="price" value="Price"></p:outputLabel>
+							<p:inputText id="price" required="true"
+								value="#{dishManagedBean.dish.price}">
+								<f:convertNumber minFractionDigits="2" />
+							</p:inputText>
+
+							<p:outputLabel value="Picture" for="picture">
 							</p:outputLabel>
-						</p:column>
+							<p:inputText id="picture" required="true"
+								value="#{dishManagedBean.dish.picture}">
+							</p:inputText>
+							
+							<p:commandButton process="updateDialog" update="dataTable growl"
+								value="Save" actionListener="#{dishManagedBean.save()}"
+								oncomplete="PF('EditDialog').hide();">
+							</p:commandButton>
 
-						<p:column headerText="Delete">
-							<p:button value="Delete"
-								>
-							</p:button>
-						</p:column>
-						
-						<p:column headerText="Disable/Enable">
-							<p:button value="Disable"
-								>
-							</p:button>
-						</p:column>
+						</h:panelGrid>
+					</h:form>
 
-					</p:dataTable>
+				</p:dialog>
 
-				
 
 			</div>
 

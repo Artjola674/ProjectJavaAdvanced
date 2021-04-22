@@ -6,23 +6,41 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	
+
 
 <body>
 	<ui:composition>
-		<div class="card">
-				<h:form>
-					<p:growl id="messages" showDetail="true" />
+		<div class="dish">
+			<h:form>
+				<p:growl id="messages" showDetail="true" />
 
-					<p:menuButton value="Dish">
-						<p:menuitem value="Add a new dish" action="addDish.xhtml"
-							ajax="false" update="messages" icon="pi pi-save" />
-						<p:menuitem value="Show all dishes" action="dish.xhtml"
-							update="messages" icon="pi pi-refresh" />
-					</p:menuButton>
-				</h:form>
-			</div>
-		
+				<p:menuButton value="Dish">
+					<p:menuitem value="Add a new dish" action="addDish.xhtml"
+						ajax="false" update="messages" />
+					<p:menuitem value="Show all dishes" action="dish.xhtml"
+						update="messages" />
+					<p:menuitem value="Show only available dishes"
+						action="availableDishes.xhtml" update="messages" />
+					<p:menuitem value="Show only not available dishes"
+						action="notAvailableDishes.xhtml" update="messages" />
+				</p:menuButton>
+			</h:form>
+		</div>
+
+		<div class="order">
+
+			<h:form>
+				<p:growl id="messages" showDetail="true" />
+				<p:menuButton value="Order">
+					<p:menuitem value="Show undelivered orders" action="index.xhtml"
+						ajax="false" update="messages" />
+					<p:menuitem value="Show delivered orders" action="deliveredOrders.xhtml"
+						update="messages" />
+					<p:menuitem value="Show all orders"
+						action="allOrders.xhtml" update="messages" />
+				</p:menuButton>
+			</h:form>
+		</div>
 	</ui:composition>
 </body>
 </html>

@@ -17,7 +17,7 @@ public class DishRowMapper implements RowMapper<Dish>{
 		dish.setCategory(rs.getString("category"));
 		dish.setDishName(rs.getString("dish_name"));
 		dish.setDescription(rs.getString("description"));
-		dish.setPrice(rs.getInt("price"));
+		dish.setPrice(rs.getDouble("price"));
 		dish.setAvailability(rs.getBoolean("availability"));
 		dish.setAdminName((rs.getString("first_name").concat(" ")).concat(rs.getString("last_name")));
 		dish.setPicture(rs.getString("picture"));

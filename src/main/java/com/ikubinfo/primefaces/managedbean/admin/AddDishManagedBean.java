@@ -3,9 +3,16 @@ package com.ikubinfo.primefaces.managedbean.admin;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.omg.CORBA.portable.InputStream;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.file.UploadedFile;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.service.admin.DishService;
@@ -25,6 +32,8 @@ public class AddDishManagedBean implements Serializable{
 	
 	private Dish dish;
 	private int adminId;
+	private FileUpload file;
+	
 	
 	@PostConstruct
 	public void init() {
@@ -42,6 +51,8 @@ public class AddDishManagedBean implements Serializable{
 			return "addDish.xhtml";
 		}
 	}
+	
+	
 
 	public DishService getDishService() {
 		return dishService;
@@ -74,6 +85,15 @@ public class AddDishManagedBean implements Serializable{
 	public void setAdminId(int adminId) {
 		this.adminId = adminId;
 	}
+
+	public FileUpload getFile() {
+		return file;
+	}
+
+	public void setFile(FileUpload file) {
+		this.file = file;
+	}
+
 	
 	
 		

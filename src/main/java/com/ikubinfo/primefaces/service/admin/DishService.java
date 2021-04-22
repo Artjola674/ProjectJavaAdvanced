@@ -30,18 +30,33 @@ public class DishService {
 		return dishRepository.getAdminId(email);
 	}
 	
-	public List<String> getCategories() {
-		return dishRepository.getCategories();
+	public List<String> getCategories(Boolean availability) {
+		return dishRepository.getCategories(availability);
 	}
 	
-	public List<String> getDishNames(String category) {
+	public List<String> getDishNames(String category, Boolean availability) {
 		
-		return dishRepository.getDishNames(category);
+		return dishRepository.getDishNames(category,availability);
 	}
 
 
-	public List<Dish> getAllDishes(String category, String dishName) {
-		return dishRepository.getAllDishes(category, dishName);
+	public List<Dish> getAllDishes(String category, String dishName, Boolean availability) {
+		return dishRepository.getAllDishes(category, dishName, availability);
 	}
+	
+	public void availability(int dishId, boolean availability) {
+		dishRepository.availability(dishId, availability);
+	}
+
+	public boolean delete(int dishId) {
+		return dishRepository.delete(dishId);
+	}
+
+
+	public boolean save(Dish dish) {
+		return dishRepository.save(dish);
+	}
+
+
 
 }
