@@ -17,7 +17,7 @@
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{notAvailableDishManagedBean.category}"
 						filter="true" filterMatchMode="startsWith">
-						<p:ajax listener="#{notAvailableDishManagedBean.getDishNames()}" />
+						<p:ajax listener="#{notAvailableDishManagedBean.getDishNames()}" update="dishName"/>
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems value="#{notAvailableDishManagedBean.categories}" />
 

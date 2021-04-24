@@ -1,5 +1,10 @@
 package com.ikubinfo.primefaces.repository.admin;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +12,7 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
+import org.primefaces.shaded.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -134,6 +140,11 @@ public class DishRepository {
 		int updatedCount = this.namedParameterJdbcTemplate.update(UPDATE_DISH, namedParameters);
 
 		return updatedCount > 0;
+	}
+	
+	public void save(InputStream inputStream, File file) throws IOException {
+		OutputStream output = new FileOutputStream(file);
+		IOUtils.copy(inputStream, output);
 	}
 
 }

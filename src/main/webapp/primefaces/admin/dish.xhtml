@@ -17,7 +17,7 @@
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
 						filter="true" filterMatchMode="startsWith">
-						<p:ajax listener="#{dishManagedBean.getDishNames()}" />
+						<p:ajax listener="#{dishManagedBean.getDishNames()}" update="dishName"/>
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems value="#{dishManagedBean.categories}" />
 
@@ -68,9 +68,8 @@
 						<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Picture">
-						<p:graphicImage library="scr/main/resources"
-							name="mycatering/#{dish.picture}" />
+					<p:column headerText="Picture">				
+						<img src="/image/#{dish.picture}" width="110" height="110"/>
 					</p:column>
 
 					<p:column headerText="Last Update">

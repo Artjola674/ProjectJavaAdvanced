@@ -1,9 +1,9 @@
 package com.ikubinfo.primefaces.service.admin;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,12 @@ public class DishService {
 	public boolean insertDish(Dish dish, int adminId) {
 		return dishRepository.insertDish(dish,adminId);
 	}
-
-
+	
+	public void save(InputStream inputStream,String fileName) throws IOException {
+		File directory = new File("C:\\Users\\kanac\\git\\ProjectJavaAdvanced\\src\\main\\webapp\\resources\\image");
+		File file = new File(directory,fileName);
+		dishRepository.save(inputStream, file);
+	}
 	public int getAdminId(String email) {
 		return dishRepository.getAdminId(email);
 	}

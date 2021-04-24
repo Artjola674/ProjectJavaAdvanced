@@ -79,8 +79,6 @@ public class DishManagedBean implements Serializable{
 
 	}
 	
-	
-	
 	public DishService getDishService() {
 		return dishService;
 	}
