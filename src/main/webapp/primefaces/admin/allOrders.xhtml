@@ -8,20 +8,77 @@
 <h:body>
 	<ui:composition template="/template/template.xhtml">
 
+		<ui:define name="header">
+			<h:form>
+				<p:megaMenu orientation="horizontal" autoDisplay="false">
+					<p:submenu label="Order">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View all orders"
+									action="#{showAllOrdersManagedBean.viewAllOrders}"
+									immediate="true" update="dataTable total">
+								</p:menuitem>
+								<p:menuitem value="View only undelivered orders"
+									action="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
+									immediate="true" update="dataTable total" />
+								<p:menuitem value="View only delivered orders"
+									action="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
+									immediate="true" update="dataTable total">
+								</p:menuitem>
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Dish">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+								<p:menuitem value="View all dishes" action="dish.xhtml"
+									actionListener="#{dishManagedBean.showAllDishes}"
+									immediate="true" />
+								<p:menuitem value="View only available dishes"
+									action="dish.xhtml"
+									actionListener="#{dishManagedBean.showOnlyAvailableDishes}"
+									immediate="true" />
+								<p:menuitem value="View only not available dishes"
+									action="dish.xhtml"
+									actionListener="#{dishManagedBean.showOnlyNotAvailableDishes}"
+									immediate="true" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="User" icon="pi pi-fw pi-users">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View profile" action="viewProfile.xhtml" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Log out" style="float: right;">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Log out" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+				</p:megaMenu>
+			</h:form>
+		</ui:define>
+
 		<ui:define name="content">
 
 			<div class="table">
+
 				<p:growl id="growl"></p:growl>
 				<h:form id="form">
 
-					<p:outputLabel for="startDate" value="Select start date" />
+					<p:outputLabel for="startDate" value="From: " />
 					<p:datePicker id="startDate" immediate="true"
-						value="#{showAllOrdersManagedBean.startDate}" showIcon="true" >
+						value="#{showAllOrdersManagedBean.startDate}" showIcon="true">
 						<p:ajax update="startDate" />
 					</p:datePicker>
-					<p:outputLabel for="endDate" value="Select end date" />
+					<p:outputLabel for="endDate" value="To: " />
 					<p:datePicker id="endDate" immediate="true"
-						value="#{showAllOrdersManagedBean.endDate}" showIcon="true" >
+						value="#{showAllOrdersManagedBean.endDate}" showIcon="true">
 						<p:ajax update="endDate" />
 					</p:datePicker>
 
@@ -31,8 +88,9 @@
 					</p:commandButton>
 
 				</h:form>
-				<p:dataTable id="dataTable" value="#{showAllOrdersManagedBean.orders}"
-					var="order" paginator="true" rows="10" styleClass="p-mt-2"
+				<p:dataTable id="dataTable"
+					value="#{showAllOrdersManagedBean.orders}" var="order"
+					paginator="true" rows="10" styleClass="p-mt-2"
 					allowUnsorting="true" sortMode="single">
 
 					<p:column headerText="Order Id">
@@ -41,43 +99,67 @@
 
 					<p:column headerText="Order Date">
 						<p:outputLabel value="#{order.orderDate}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 						</p:outputLabel>
 					</p:column>
 
 					<p:column headerText="Price">
 						<p:outputLabel value="#{order.totalPrice} $"></p:outputLabel>
 					</p:column>
-					
+
 					<p:column headerText="Client">
 						<p:outputLabel value="#{order.clientName}"></p:outputLabel>
 					</p:column>
-					
+
 					<p:column headerText="Address">
 						<p:outputLabel value="#{order.clientAddress}"></p:outputLabel>
 					</p:column>
-					
+
 					<p:column headerText="Phone Number">
 						<p:outputLabel value="#{order.clientPhoneNumber}"></p:outputLabel>
 					</p:column>
-					
+
 
 					<p:column headerText="Details">
 						<p:inputTextarea value="#{order.quantityAndName}"></p:inputTextarea>
 					</p:column>
-					
-					<p:column headerText="Delivered">
+
+					<p:column id="delivered" headerText="Delivered"
+						visible="#{showAllOrdersManagedBean.showDelivered}">
 						<p:commandButton value="Delivered" disabled="#{order.delivered}"
-							action="#{showAllOrdersOrdersManagedBean.deliver}" immediate="true"
+							action="#{showAllOrdersManagedBean.deliver}" immediate="true"
 							update="dataTable">
 							<f:setPropertyActionListener
-								target="#{unDeliveredOrdersManagedBean.orderId}"
+								target="#{showAllOrdersManagedBean.orderId}"
 								value="#{order.orderId}" />
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>
+				<h:form id="total">
+					<p:panelGrid styleClass="panelgrid-dotted-border"
+						rendered="#{showAllOrdersManagedBean.showTotal}">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2">
+									<h:outputText value="Total Revenue" />
+								</p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width: 100px;">
+								<p:outputLabel value="Total" style="font-weight: bold;" />
+							</p:column>
 
-				
+							<p:column style="width: 100px;">
+								<p:outputLabel value="#{showAllOrdersManagedBean.total}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+				</h:form>
+
+
+
 			</div>
 
 		</ui:define>

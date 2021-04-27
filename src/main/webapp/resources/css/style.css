@@ -5,16 +5,12 @@
 	margin-bottom: 5px;
 	bottom:5px;
 }
-.menu .dish{
-	position:relative;
-	float:left;
-	padding-left:20xp;
-	
-	
+
+.centered {
+text-align: right;
+margin-left: 50%;
 }
-.menu .order{
-	position:relative;
-	float:left;
-	padding-left:20xp;
-	
+.panelgrid-dotted-border{
+    border-collapse: separate;
+    border-spacing: 2px;
 }

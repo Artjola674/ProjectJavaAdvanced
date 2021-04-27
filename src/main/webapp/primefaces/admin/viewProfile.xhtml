@@ -1,0 +1,199 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/template.xhtml">
+
+		<ui:define name="header">
+			<h:form>
+				<p:megaMenu orientation="horizontal" autoDisplay="false">
+					<p:submenu label="Order">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View all orders" action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.viewAllOrders}"
+									immediate="true">
+								</p:menuitem>
+								<p:menuitem value="View only undelivered orders"
+									action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
+									immediate="true" />
+								<p:menuitem value="View only delivered orders"
+									action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
+									immediate="true">
+								</p:menuitem>
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Dish">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+								<p:menuitem value="View all dishes" action="dish.xhtml"
+									actionListener="#{dishManagedBean.showAllDishes}"
+									immediate="true" />
+								<p:menuitem value="View only available dishes"
+									action="dish.xhtml"
+									actionListener="#{dishManagedBean.showOnlyAvailableDishes}"
+									immediate="true" />
+								<p:menuitem value="View only not available dishes"
+									action="dish.xhtml"
+									actionListener="#{dishManagedBean.showOnlyNotAvailableDishes}"
+									immediate="true" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Dish">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+								<p:menuitem value="View all dishes" action="dish.xhtml" />
+								<p:menuitem value="View only available dishes"
+									action="dish.xhtml" />
+								<p:menuitem value="View only not available dishes"
+									action="dish.xhtml" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="User" icon="pi pi-fw pi-users">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View profile" action="viewProfile.xhtml" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Log out" style="float: right;">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Log out" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+				</p:megaMenu>
+			</h:form>
+		</ui:define>
+
+		<ui:define name="content">
+			<div align="center">
+
+				<p:growl id="growl" showDetail="true" />
+				<h:form id="profile" >
+					<p:panelGrid styleClass="panelgrid-dotted-border">
+						<f:facet name="header">
+							<p:row>
+								<p:column colspan="2">
+									<h:outputText value="Admin Profile" />
+								</p:column>
+							</p:row>
+						</f:facet>
+						<p:row>
+							<p:column style="width: 200px;">
+								<p:outputLabel value="First Name" style="font-weight: bold;" />
+							</p:column>
+
+							<p:column style="width: 200px;">
+								<p:outputLabel
+									value="#{adminProfileManagedBean.admin.firstName}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Last Name" style="font-weight: bold;" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="#{adminProfileManagedBean.admin.lastName}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Email" style="font-weight: bold;" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="#{adminProfileManagedBean.admin.email}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Password" style="font-weight: bold;" />
+							</p:column>
+
+							<p:column>
+								<p:outputLabel value="#{adminProfileManagedBean.admin.password}" />
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+
+					<p:commandButton value="Edit Admin" update="updateDialog"
+						process="@this" oncomplete="PF('EditDialog').show();">
+
+						<f:setPropertyActionListener
+							target="#{adminProfileManagedBean.editAdmin}"
+							value="#{adminProfileManagedBean.admin}" />
+
+					</p:commandButton>
+				</h:form>
+				<p:dialog header="Edit Admin" id="updateDialog"
+					widgetVar="EditDialog" modal="true">
+					<h:form id="dialogForm">
+
+						<h:panelGrid columns="2">
+							<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
+							<p:inputText id="firstName" required="true"
+								value="#{adminProfileManagedBean.editAdmin.firstName}"></p:inputText>
+
+							<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
+							<p:inputText id="lastName" required="true"
+								value="#{adminProfileManagedBean.editAdmin.lastName}"></p:inputText>
+
+							<p:outputLabel for="email" value="Email"></p:outputLabel>
+							<p:outputLabel id="email" required="true"
+								value="#{adminProfileManagedBean.editAdmin.email}"></p:outputLabel>
+
+							<p:outputLabel for="oldPassword" value="Old Password"></p:outputLabel>
+							<p:password id="oldPassword"
+								value="#{adminProfileManagedBean.oldPassword}" toggleMask="true"
+								redisplay="true" feedback="true" inline="true" />
+
+							<p:outputLabel for="newPassword" value="New Password"></p:outputLabel>
+							<p:password id="newPassword"
+								value="#{adminProfileManagedBean.newPassword}" toggleMask="true"
+								redisplay="true" feedback="true" inline="true"
+								match="confirmNewPassword" />
+
+							<p:outputLabel for="confirmNewPassword"
+								value="Confirm New Password"></p:outputLabel>
+							<p:password id="confirmNewPassword"
+								value="#{adminProfileManagedBean.newPassword}" toggleMask="true"
+								redisplay="true" feedback="true" inline="true" />
+
+							<p:commandButton process="updateDialog" update="growl @form profile"
+								value="Save" actionListener="#{adminProfileManagedBean.save()}"
+								oncomplete="PF('EditDialog').hide();">
+							</p:commandButton>
+
+							<p:messages id="messages" showDetail="true">
+								<p:autoUpdate />
+							</p:messages>
+
+							
+
+						</h:panelGrid>
+					</h:form>
+
+				</p:dialog>
+
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+

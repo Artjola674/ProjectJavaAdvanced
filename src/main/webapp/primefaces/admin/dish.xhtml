@@ -8,18 +8,76 @@
 <h:body>
 	<ui:composition template="/template/template.xhtml">
 
+		<ui:define name="header">
+			<h:form>
+				<p:megaMenu orientation="horizontal" autoDisplay="false">
+					<p:submenu label="Order">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View all orders" action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.viewAllOrders}"
+									immediate="true">
+								</p:menuitem>
+								<p:menuitem value="View only undelivered orders"
+									action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
+									immediate="true" />
+								<p:menuitem value="View only delivered orders"
+									action="allOrders.xhtml"
+									actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
+									immediate="true">
+								</p:menuitem>
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+
+					<p:submenu label="Dish">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+								<p:menuitem value="View all dishes"
+									action="#{dishManagedBean.showAllDishes}" immediate="true"
+									update="dataTable form" />
+								<p:menuitem value="View only available dishes"
+									action="#{dishManagedBean.showOnlyAvailableDishes}"
+									immediate="true" update="dataTable form" />
+								<p:menuitem value="View only not available dishes"
+									action="#{dishManagedBean.showOnlyNotAvailableDishes}"
+									immediate="true" update="dataTable form" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="User" icon="pi pi-fw pi-users">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="View profile" action="viewProfile.xhtml" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+					<p:submenu label="Log out" style="float: right;">
+						<p:column>
+							<p:submenu label="">
+								<p:menuitem value="Log out" />
+							</p:submenu>
+						</p:column>
+					</p:submenu>
+				</p:megaMenu>
+			</h:form>
+		</ui:define>
+
 		<ui:define name="content">
 
-			<div class="datatable">
+			<div >
 				<p:growl id="growl"></p:growl>
 				<h:form id="form">
 
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
 						filter="true" filterMatchMode="startsWith">
-						<p:ajax listener="#{dishManagedBean.getDishNames()}" update="dishName"/>
+						<p:ajax listener="#{dishManagedBean.getDishNames()}"
+							update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{dishManagedBean.categories}" />
+						<f:selectItems id="categories" value="#{dishManagedBean.categories}" />
 
 					</p:selectOneMenu>
 
@@ -28,7 +86,7 @@
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{dishManagedBean.names}" />
+						<f:selectItems id="dishNames" value="#{dishManagedBean.names}" />
 
 					</p:selectOneMenu>
 
@@ -39,7 +97,7 @@
 
 				</h:form>
 				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
-					var="dish" paginator="true" rows="10" styleClass="p-mt-2"
+					var="dish" paginator="true" rows="4" styleClass="p-mt-2"
 					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
 					sortOrder="ascending">
 
@@ -68,8 +126,8 @@
 						<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Picture">				
-						<img src="/image/#{dish.picture}" width="110" height="110"/>
+					<p:column headerText="Picture">
+						<img src="/image/#{dish.picture}" width="110" height="110" />
 					</p:column>
 
 					<p:column headerText="Last Update">
@@ -78,7 +136,8 @@
 						</p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Disable">
+					<p:column headerText="Disable"
+						visible="#{dishManagedBean.showDisableColumn}">
 						<p:commandButton value="Disable" disabled="#{!dish.availability}"
 							action="#{dishManagedBean.disable}" immediate="true"
 							update="dataTable">
@@ -87,7 +146,8 @@
 						</p:commandButton>
 					</p:column>
 
-					<p:column headerText="Enable">
+					<p:column headerText="Enable"
+						visible="#{dishManagedBean.showEnableColumn}">
 						<p:commandButton value="Enable" disabled="#{dish.availability}"
 							action="#{dishManagedBean.enable}" immediate="true"
 							update="dataTable">
@@ -96,11 +156,11 @@
 						</p:commandButton>
 					</p:column>
 
-					<p:column headerText="Delete">
+					<p:column headerText="Delete"
+						visible="#{dishManagedBean.showDeleteColumn}">
 						<p:commandButton value="Delete" immediate="true"
 							action="#{dishManagedBean.delete}"
-							update="dataTable
-							 growl">
+							update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -116,7 +176,8 @@
 						</p:confirmDialog>
 					</p:column>
 
-					<p:column headerText="Edit">
+					<p:column headerText="Edit"
+						visible="#{dishManagedBean.showEditColumn}">
 						<p:commandButton value="Edit" update="updateDialog"
 							process="@this" oncomplete="PF('EditDialog').show();">
 
@@ -130,7 +191,7 @@
 
 				<p:dialog header="Edit Dish" id="updateDialog"
 					widgetVar="EditDialog" modal="true">
-					<h:form id="dialogForm">
+					<h:form id="dialogForm" enctype="multipart/form-data">
 
 						<h:panelGrid columns="2">
 							<p:outputLabel for="category" value="Category"></p:outputLabel>
@@ -151,14 +212,13 @@
 								<f:convertNumber minFractionDigits="2" />
 							</p:inputText>
 
-							<p:outputLabel value="Picture" for="picture">
-							</p:outputLabel>
-							<p:inputText id="picture" required="true"
-								value="#{dishManagedBean.dish.picture}">
-							</p:inputText>
-							
-							<p:commandButton process="updateDialog" update="dataTable growl"
-								value="Save" actionListener="#{dishManagedBean.save()}"
+							<p:outputLabel value="Picture" for="picture"></p:outputLabel>
+							<p:fileUpload id="picture" value="#{dishManagedBean.file}"
+								mode="simple" skinSimple="true" />
+
+							<p:commandButton process="updateDialog"
+								update="dataTable growl form:category form:dishName" value="Save"
+								actionListener="#{dishManagedBean.save()}"
 								oncomplete="PF('EditDialog').hide();">
 							</p:commandButton>
 

@@ -10,37 +10,50 @@
 
 <body>
 	<ui:composition>
-		<div class="dish">
-			<h:form>
-				<p:growl id="messages" showDetail="true" />
-
-				<p:menuButton value="Dish">
-					<p:menuitem value="Add a new dish" action="addDish.xhtml"
-						ajax="false" update="messages" />
-					<p:menuitem value="Show all dishes" action="dish.xhtml"
-						update="messages" />
-					<p:menuitem value="Show only available dishes"
-						action="availableDishes.xhtml" update="messages" />
-					<p:menuitem value="Show only not available dishes"
-						action="notAvailableDishes.xhtml" update="messages" />
-				</p:menuButton>
-			</h:form>
-		</div>
-
-		<div class="order">
-
-			<h:form>
-				<p:growl id="messages" showDetail="true" />
-				<p:menuButton value="Order">
-					<p:menuitem value="Show undelivered orders" action="index.xhtml"
-						ajax="false" update="messages" />
-					<p:menuitem value="Show delivered orders" action="deliveredOrders.xhtml"
-						update="messages" />
-					<p:menuitem value="Show all orders"
-						action="allOrders.xhtml" update="messages" />
-				</p:menuButton>
-			</h:form>
-		</div>
+		<h:form>
+			<p:megaMenu orientation="horizontal" autoDisplay="false">
+				<p:submenu label="Order">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View all orders" action="allOrders.xhtml" actionListener="#{showAllOrdersManagedBean.viewAllOrders()}" >
+							
+							</p:menuitem>
+							<p:menuitem value="View only undelivered orders" actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders()}"
+								action="allOrders.xhtml" />
+							<p:menuitem value="View only delivered orders" actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders()}"
+								action="allOrders.xhtml" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Dish">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+							<p:menuitem value="View all dishes" action="dish.xhtml" />
+							<p:menuitem value="View only available dishes"
+								action="availableDishes.xhtml" />
+							<p:menuitem value="View only not available dishes"
+								action="notAvailableDishes.xhtml" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="User" icon="pi pi-fw pi-users">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View profile" action="viewProfile.xhtml" />
+							<p:menuitem value="Edit profile" action="editProfile.xhtml" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Log out" style="float: right;">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Log out" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+			</p:megaMenu>
+		</h:form>
 	</ui:composition>
 </body>
 </html>

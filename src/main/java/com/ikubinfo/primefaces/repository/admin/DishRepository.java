@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import org.primefaces.shaded.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -44,22 +45,22 @@ public class DishRepository {
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
 
-	
+	@Autowired
 	public DishRepository(DataSource dataSource) {
 		super();
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-
+	
 	public int getAdminId(String email) {
 		return jdbcTemplate.queryForObject(GET_ADMIN_ID, Integer.class, email);
 	}
 
-	public boolean insertDish(Dish dish, int adminId) {
+	public boolean insertDish(Dish dish, int adminId,String picture) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("category", dish.getCategory()).addValue("dishName", dish.getDishName()).addValue("description", dish.getDescription())
-		.addValue("price", dish.getPrice()).addValue("adminId", adminId).addValue("picture", dish.getPicture());
-		int updatedCount = namedParameterJdbcTemplate.update(INSERT_DISH, namedParameters);
+		.addValue("price", dish.getPrice()).addValue("adminId", adminId).addValue("picture", picture);
+		int updatedCount = this.namedParameterJdbcTemplate.update(INSERT_DISH, namedParameters);
 		return updatedCount > 0;
 	}
 	
@@ -120,7 +121,7 @@ public class DishRepository {
 		params.put("dishId", dishId);
 		params.put("availability", availability);
 		
-		namedParameterJdbcTemplate.update(AVAILABILITY_UPDATE, params);
+		this.namedParameterJdbcTemplate.update(AVAILABILITY_UPDATE, params);
 
 	}
 
@@ -132,19 +133,21 @@ public class DishRepository {
 		return updatedCount > 0;
 	}
 
-	public boolean save(Dish dish) {
+	public boolean save(Dish dish,String picture) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("category", dish.getCategory()).addValue("dishName", dish.getDishName()).addValue("price", dish.getPrice())
-		.addValue("description", dish.getDescription()).addValue("picture", dish.getPicture()).addValue("id", dish.getDishId());
+		.addValue("description", dish.getDescription()).addValue("picture", picture).addValue("id", dish.getDishId());
 
 		int updatedCount = this.namedParameterJdbcTemplate.update(UPDATE_DISH, namedParameters);
 
 		return updatedCount > 0;
 	}
 	
-	public void save(InputStream inputStream, File file) throws IOException {
+	public void savePicture(InputStream inputStream, File file) throws IOException {
 		OutputStream output = new FileOutputStream(file);
 		IOUtils.copy(inputStream, output);
 	}
+	
+	
 
 }

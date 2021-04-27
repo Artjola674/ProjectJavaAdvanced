@@ -32,36 +32,41 @@ public class AddDishManagedBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		this.dish = new Dish();
+		dish = new Dish();
 		adminId = dishService.getAdminId("artjola.kotorri@gmail.com");
 	}
 
 	public String insertDish() {
-		if (dishService.insertDish(dish, adminId)) {
-			messages.showInfoMessage("Dish was added successfully");
-			dish = new Dish();
-			return "dish.xhtml";
-		} else {
-			messages.showInfoMessage("Something went wrong");
-			return "addDish.xhtml";
-		}
-	}
-
-	public void handleFileUpload() {
+		
 		if (file != null) {
-			try {
-				String fileName = file.getFileName();
-				this.dish.setPicture(fileName);
-				java.io.InputStream inputStream = file.getInputStream();
-				dishService.save(inputStream, fileName);
-				messages.showInfoMessage("File was uploaded successfully");
-			} catch (IOException e) {
-				messages.showInfoMessage("Something went wrong");
+			if(file.getFileName() != null) {
+				try {
+					String fileName = file.getFileName();
+					this.dish.setPicture(fileName);
+					java.io.InputStream inputStream = file.getInputStream();
+					dishService.savePicture(inputStream, fileName);
+					
+					if (dishService.insertDish(dish, adminId,fileName)) {
+						messages.showInfoMessage("Dish was added successfully");
+						dish = new Dish();
+						return "dish.xhtml";
+					} else {
+						messages.showInfoMessage("Something went wrong");
+						return "addDish.xhtml";
+					}
+				} catch (IOException e) {
+					messages.showInfoMessage("Something went wrong");
+					
+				}
+			}else {
+				messages.showInfoMessage("File should not be empty");
 			}
-
-		}
+		}	
+		
+		return "addDish.xhtml";
 	}
 
+	
 	public DishService getDishService() {
 		return dishService;
 	}

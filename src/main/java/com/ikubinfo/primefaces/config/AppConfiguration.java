@@ -8,8 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -17,6 +16,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @ComponentScan("com.ikubinfo")
 @PropertySource("classpath:ikubinfo.properties")
+@EnableTransactionManagement
 public class AppConfiguration {
 
 	@Value("${jdbc.password}")

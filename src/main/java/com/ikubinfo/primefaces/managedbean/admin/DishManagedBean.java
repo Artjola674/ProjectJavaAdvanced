@@ -1,76 +1,140 @@
 package com.ikubinfo.primefaces.managedbean.admin;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+
+import org.primefaces.model.file.UploadedFile;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.service.admin.DishService;
 import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
-@ViewScoped
-public class DishManagedBean implements Serializable{
-	
+@SessionScoped
+public class DishManagedBean implements Serializable {
+
 	private static final long serialVersionUID = -7853456626370075836L;
 
 	@ManagedProperty(value = "#{dishService}")
 	private DishService dishService;
-	
+
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	private List<Dish> dishes;
 	private Dish dish;
 	private String category;
 	private String dishName;
 	private List<String> categories;
 	private List<String> names;
-	
+	private UploadedFile file;
+	private String picture;
+	private Boolean availability;
+	private boolean showEnableColumn;
+	private boolean showDisableColumn;
+	private boolean showDeleteColumn;
+	private boolean showEditColumn;
+
 	@PostConstruct
 	public void init() {
-		dishes = dishService.getAllDishes(null,null,null);
-		categories = dishService.getCategories(null);
-		names = dishService.getDishNames(null,null);
-		dish = new Dish();
+		availability = null;
+		showEnableColumn = true;
+		showDisableColumn = true;
+		showDeleteColumn = true;
+		showEditColumn = true;
+		dishes = dishService.getAllDishes(null, null, availability);
+		categories = dishService.getCategories(availability);
+		names = dishService.getDishNames(null, availability);
 	}
-	
+
+	public void showAllDishes() {
+		availability = null;
+		showEnableColumn = true;
+		showDisableColumn = true;
+		showDeleteColumn = true;
+		showEditColumn = true;
+		dishes = dishService.getAllDishes(null, null, availability);
+		categories = dishService.getCategories(availability);
+		names = dishService.getDishNames(null, availability);
+	}
+
+	public void showOnlyAvailableDishes() {
+		availability = true;
+		showEnableColumn = false;
+		showDisableColumn = true;
+		showDeleteColumn = false;
+		showEditColumn = false;
+		dishes = dishService.getAllDishes(null, null, availability);
+		categories = dishService.getCategories(availability);
+		names = dishService.getDishNames(null, availability);
+	}
+
+	public void showOnlyNotAvailableDishes() {
+		availability = false;
+		showEnableColumn = true;
+		showDisableColumn = false;
+		showDeleteColumn = false;
+		showEditColumn = false;
+		dishes = dishService.getAllDishes(null, null, availability);
+		categories = dishService.getCategories(availability);
+		names = dishService.getDishNames(null, availability);
+	}
+
 	public void getDishNames() {
-		names = dishService.getDishNames(category,null);
+		names = dishService.getDishNames(category, availability);
 	}
-	
+
 	public void search() {
-		System.out.println(category+ dishName);
-		dishes = dishService.getAllDishes(category,dishName,null);
+		dishes = dishService.getAllDishes(category, dishName, availability);
 	}
-	
+
 	public void save() {
-		if (dishService.save(dish)) {
-			dishes = dishService.getAllDishes(category,dishName,null);
+		
+		if (file != null) {
+			if(file.getFileName() != null) {
+				try {
+					String fileName = file.getFileName();
+					picture = fileName;
+					java.io.InputStream inputStream = file.getInputStream();
+					dishService.savePicture(inputStream, fileName);
+						
+				} catch (IOException e) {
+					messages.showInfoMessage("Something went wrong");
+				}
+
+			}else {
+				picture = dish.getPicture();
+			}
+			
+		}
+		if (dishService.save(dish,picture)) {
+			dishes = dishService.getAllDishes(category, dishName, availability);
 			messages.showInfoMessage("Dish updated successfully");
 
 		}
 		dish = new Dish();
 
 	}
-	
+
 	public void enable() {
 		dishService.availability(dish.getDishId(), true);
-		dishes = dishService.getAllDishes(category,dishName,null);
+		dishes = dishService.getAllDishes(category, dishName, availability);
 	}
-	
+
 	public void disable() {
 		dishService.availability(dish.getDishId(), false);
-		dishes = dishService.getAllDishes(category,dishName,null);
+		dishes = dishService.getAllDishes(category, dishName, availability);
 	}
-	
+
 	public void delete() {
-		if(dishService.delete(dish.getDishId())) {
-			dishes = dishService.getAllDishes(null,null,null);
+		if (dishService.delete(dish.getDishId())) {
+			dishes = dishService.getAllDishes(category, dishName, availability);
 			messages.showInfoMessage("Deleted");
 
 		} else {
@@ -78,7 +142,7 @@ public class DishManagedBean implements Serializable{
 		}
 
 	}
-	
+
 	public DishService getDishService() {
 		return dishService;
 	}
@@ -142,8 +206,63 @@ public class DishManagedBean implements Serializable{
 	public void setDish(Dish dish) {
 		this.dish = dish;
 	}
-	
-	
-	
-}
 
+	public Boolean getAvailability() {
+		return availability;
+	}
+
+	public void setAvailability(Boolean availability) {
+		this.availability = availability;
+	}
+
+	public boolean isShowEnableColumn() {
+		return showEnableColumn;
+	}
+
+	public void setShowEnableColumn(boolean showEnableColumn) {
+		this.showEnableColumn = showEnableColumn;
+	}
+
+	public boolean isShowDisableColumn() {
+		return showDisableColumn;
+	}
+
+	public void setShowDisableColumn(boolean showDisableColumn) {
+		this.showDisableColumn = showDisableColumn;
+	}
+
+	public boolean isShowDeleteColumn() {
+		return showDeleteColumn;
+	}
+
+	public void setShowDeleteColumn(boolean showDeleteColumn) {
+		this.showDeleteColumn = showDeleteColumn;
+	}
+
+	public boolean isShowEditColumn() {
+		return showEditColumn;
+	}
+
+	public void setShowEditColumn(boolean showEditColumn) {
+		this.showEditColumn = showEditColumn;
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+	
+	
+
+}
