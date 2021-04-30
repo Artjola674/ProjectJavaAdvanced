@@ -17,7 +17,7 @@
 				<h:form id="form">
 
 					<p:outputLabel value="Category " for="category" />
-					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
+					<p:selectOneMenu id="category" value="#{dishManagedBean.dishDataModel.category}"
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax listener="#{dishManagedBean.getDishNames()}"
 							update="dishName" />
@@ -28,24 +28,25 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Dish Name " for="dishName" />
-					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishName}"
+					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishDataModel.dishName}"
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems id="dishNames" value="#{dishManagedBean.names}" />
-
+						
 					</p:selectOneMenu>
 
 					<p:commandButton icon="fa fa-fw fa-search"
-						action="#{dishManagedBean.search}" update="dataTable"
+						action="#{dishManagedBean.dishDataModel.filter}" update="dataTable"
 						immediate="true">
+						<f:setPropertyActionListener target="#{dishManagedBean.dishDataModel.availability}"
+								value="#{dishManagedBean.availability}" />
 					</p:commandButton>
 
 				</h:form>
-				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
-					var="dish" paginator="true" rows="4" styleClass="p-mt-2"
-					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
-					sortOrder="ascending">
+				<p:dataTable id="dataTable" binding="#{dishManagedBean.dishDataModel.dataTable}"
+				value="#{dishManagedBean.dishDataModel}"
+					var="dish" paginator="true" rows="3" lazy="true">
 
 					<p:column headerText="Dish Id">
 						<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
