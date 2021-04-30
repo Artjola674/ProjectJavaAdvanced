@@ -4,56 +4,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <body>
 	<ui:composition>
-		<h:form>
-			<p:megaMenu orientation="horizontal" autoDisplay="false">
-				<p:submenu label="Order">
-					<p:column>
-						<p:submenu label="">
-							<p:menuitem value="View all orders" action="allOrders.xhtml" actionListener="#{showAllOrdersManagedBean.viewAllOrders()}" >
-							
-							</p:menuitem>
-							<p:menuitem value="View only undelivered orders" actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders()}"
-								action="allOrders.xhtml" />
-							<p:menuitem value="View only delivered orders" actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders()}"
-								action="allOrders.xhtml" />
-						</p:submenu>
-					</p:column>
-				</p:submenu>
-				<p:submenu label="Dish">
-					<p:column>
-						<p:submenu label="">
-							<p:menuitem value="Add a new dish" action="addDish.xhtml" />
-							<p:menuitem value="View all dishes" action="dish.xhtml" />
-							<p:menuitem value="View only available dishes"
-								action="availableDishes.xhtml" />
-							<p:menuitem value="View only not available dishes"
-								action="notAvailableDishes.xhtml" />
-						</p:submenu>
-					</p:column>
-				</p:submenu>
-				<p:submenu label="User" icon="pi pi-fw pi-users">
-					<p:column>
-						<p:submenu label="">
-							<p:menuitem value="View profile" action="viewProfile.xhtml" />
-							<p:menuitem value="Edit profile" action="editProfile.xhtml" />
-						</p:submenu>
-					</p:column>
-				</p:submenu>
-				<p:submenu label="Log out" style="float: right;">
-					<p:column>
-						<p:submenu label="">
-							<p:menuitem value="Log out" />
-						</p:submenu>
-					</p:column>
-				</p:submenu>
-			</p:megaMenu>
-		</h:form>
+		<h1>IkubInfo Academy Header</h1>
 	</ui:composition>
 </body>
 </html>

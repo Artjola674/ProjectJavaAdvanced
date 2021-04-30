@@ -4,65 +4,11 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
+
 </h:head>
 <h:body>
-	<ui:composition template="/template/template.xhtml">
+	<ui:composition template="/template/admin/template.xhtml">
 
-		<ui:define name="header">
-			<h:form>
-				<p:megaMenu orientation="horizontal" autoDisplay="false">
-					<p:submenu label="Order">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View all orders"
-									action="#{showAllOrdersManagedBean.viewAllOrders}"
-									immediate="true" update="dataTable total">
-								</p:menuitem>
-								<p:menuitem value="View only undelivered orders"
-									action="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
-									immediate="true" update="dataTable total" />
-								<p:menuitem value="View only delivered orders"
-									action="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
-									immediate="true" update="dataTable total">
-								</p:menuitem>
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Dish">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
-								<p:menuitem value="View all dishes" action="dish.xhtml"
-									actionListener="#{dishManagedBean.showAllDishes}"
-									immediate="true" />
-								<p:menuitem value="View only available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyAvailableDishes}"
-									immediate="true" />
-								<p:menuitem value="View only not available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyNotAvailableDishes}"
-									immediate="true" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="User" icon="pi pi-fw pi-users">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View profile" action="viewProfile.xhtml" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Log out" style="float: right;">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Log out" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-				</p:megaMenu>
-			</h:form>
-		</ui:define>
 
 		<ui:define name="content">
 
@@ -71,18 +17,21 @@
 				<p:growl id="growl"></p:growl>
 				<h:form id="form">
 
-					<p:outputLabel for="startDate" value="From: " />
-					<p:datePicker id="startDate" immediate="true"
-						value="#{showAllOrdersManagedBean.startDate}" showIcon="true">
+					<p:outputLabel for="startDate" value=" From: " />
+					<p:calendar id="startDate" showOn="button"
+						value="#{showAllOrdersManagedBean.startDate}" locale="en"
+						pattern="dd.MM.yyyy HH:mm">
 						<p:ajax update="startDate" />
-					</p:datePicker>
-					<p:outputLabel for="endDate" value="To: " />
-					<p:datePicker id="endDate" immediate="true"
-						value="#{showAllOrdersManagedBean.endDate}" showIcon="true">
-						<p:ajax update="endDate" />
-					</p:datePicker>
+					</p:calendar>
 
-					<p:commandButton label="Search" value="Search"
+					<p:outputLabel for="endDate" value=" To: " />
+					<p:calendar id="endDate" showOn="button"
+						value="#{showAllOrdersManagedBean.endDate}" locale="en"
+						pattern="dd.MM.yyyy HH:mm">
+						<p:ajax update="startDate" />
+					</p:calendar>
+
+					<p:commandButton icon="fa fa-fw fa-search"
 						action="#{showAllOrdersManagedBean.search()}" update="dataTable"
 						immediate="true">
 					</p:commandButton>
@@ -90,8 +39,8 @@
 				</h:form>
 				<p:dataTable id="dataTable"
 					value="#{showAllOrdersManagedBean.orders}" var="order"
-					paginator="true" rows="10" styleClass="p-mt-2"
-					allowUnsorting="true" sortMode="single">
+					paginator="true" rows="3" styleClass="p-mt-2" allowUnsorting="true"
+					sortMode="single">
 
 					<p:column headerText="Order Id">
 						<p:outputLabel value="#{order.orderId}"></p:outputLabel>

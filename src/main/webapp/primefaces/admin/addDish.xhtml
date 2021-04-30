@@ -6,65 +6,7 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/template.xhtml">
-
-		<ui:define name="header">
-			<h:form>
-				<p:megaMenu orientation="horizontal" autoDisplay="false">
-					<p:submenu label="Order">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View all orders" action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.viewAllOrders}"
-									immediate="true">
-								</p:menuitem>
-								<p:menuitem value="View only undelivered orders"
-									action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
-									immediate="true" />
-								<p:menuitem value="View only delivered orders"
-									action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
-									immediate="true">
-								</p:menuitem>
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Dish">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
-								<p:menuitem value="View all dishes" action="dish.xhtml"
-									actionListener="#{dishManagedBean.showAllDishes}"
-									immediate="true" />
-								<p:menuitem value="View only available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyAvailableDishes}"
-									immediate="true" />
-								<p:menuitem value="View only not available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyNotAvailableDishes}"
-									immediate="true" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="User" icon="pi pi-fw pi-users">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View profile" action="viewProfile.xhtml" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Log out" style="float: right;">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Log out" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-				</p:megaMenu>
-			</h:form>
-		</ui:define>
+	<ui:composition template="/template/admin/template.xhtml">
 
 		<ui:define name="content">
 			<div class="addForm" align="center">
@@ -76,45 +18,52 @@
 						<h2>Add a new dish</h2>
 						<p:outputLabel for="category" value="Category" />
 						<p:inputText id="category" required="true"
-							value="#{addDishManagedBean.dish.category}"></p:inputText>
+							value="#{addDishManagedBean.dish.category}"
+							validatorMessage="Category should have only letters.">
+							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+						</p:inputText>
+
 						<br></br>
 						<br></br>
 
 						<p:outputLabel for="dishName" value="Name" />
 						<p:inputText id="dishName" required="true"
-							value="#{addDishManagedBean.dish.dishName}"></p:inputText>
-						<br></br>
-						<br></br>
-
-						<p:outputLabel for="description" value="Description" />
-						<p:inputText id="description" required="true"
-							value="#{addDishManagedBean.dish.description}"></p:inputText>
-						<br></br>
-						<br></br>
-
-						<p:outputLabel for="price" value="Price" />
-						<p:inputText id="price" required="true"
-							value="#{addDishManagedBean.dish.price}">
-							<f:convertNumber minFractionDigits="2" />
+							value="#{addDishManagedBean.dish.dishName}"
+							validatorMessage="Dish name should have only letters.">
+							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 						</p:inputText>
 						<br></br>
 						<br></br>
 
-						<p:outputLabel value="Picture" for="picture" />
-						<h:form id="picture" enctype="multipart/form-data">
-							<p:fileUpload value="#{addDishManagedBean.file}" mode="simple"
-								skinSimple="true" />
-						</h:form>
+						<p:outputLabel for="price" value="Price" />
+						<p:inputNumber id="price" required="true"
+							value="#{addDishManagedBean.dish.price}" symbol=" $"
+							symbolPosition="s" decimalSeparator="." minValue="0"
+							maxValue="100" decimalPlaces="2">
+						</p:inputNumber>
+						<br></br>
+						<br></br>
 
+						<p:outputLabel for="description" value="Description" />
+						<p:inputTextarea id="description" required="true"
+							value="#{addDishManagedBean.dish.description}"></p:inputTextarea>
 						<br></br>
 						<br></br>
+
+						<p:outputLabel value="Picture" for="picture" />
+
+						<p:fileUpload id="picture" value="#{addDishManagedBean.file}"
+							mode="simple" skinSimple="true" />
+						<br></br>
+						<br></br>
+
 						<div align="center">
 							<p:commandButton value="Save" style="align: center"
 								action="#{addDishManagedBean.insertDish}" update="growl @this"
 								icon="pi pi-save">
 							</p:commandButton>
-
 						</div>
+
 					</h:form>
 				</h:panelGrid>
 			</div>

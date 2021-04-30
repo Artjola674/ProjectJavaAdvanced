@@ -140,8 +140,7 @@
 
 
 	</dependencies>
-
-
+	
 	<build>
 		<finalName>TheAPP</finalName>
 	</build>

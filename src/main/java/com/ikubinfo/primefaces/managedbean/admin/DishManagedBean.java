@@ -7,7 +7,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.file.UploadedFile;
 
@@ -16,7 +17,7 @@ import com.ikubinfo.primefaces.service.admin.DishService;
 import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class DishManagedBean implements Serializable {
 
 	private static final long serialVersionUID = -7853456626370075836L;
@@ -28,6 +29,7 @@ public class DishManagedBean implements Serializable {
 	private Messages messages;
 
 	private List<Dish> dishes;
+	private int show;
 	private Dish dish;
 	private String category;
 	private String dishName;
@@ -43,47 +45,37 @@ public class DishManagedBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		availability = null;
-		showEnableColumn = true;
-		showDisableColumn = true;
-		showDeleteColumn = true;
-		showEditColumn = true;
-		dishes = dishService.getAllDishes(null, null, availability);
-		categories = dishService.getCategories(availability);
-		names = dishService.getDishNames(null, availability);
-	}
-
-	public void showAllDishes() {
-		availability = null;
-		showEnableColumn = true;
-		showDisableColumn = true;
-		showDeleteColumn = true;
-		showEditColumn = true;
-		dishes = dishService.getAllDishes(null, null, availability);
-		categories = dishService.getCategories(availability);
-		names = dishService.getDishNames(null, availability);
-	}
-
-	public void showOnlyAvailableDishes() {
-		availability = true;
-		showEnableColumn = false;
-		showDisableColumn = true;
-		showDeleteColumn = false;
-		showEditColumn = false;
-		dishes = dishService.getAllDishes(null, null, availability);
-		categories = dishService.getCategories(availability);
-		names = dishService.getDishNames(null, availability);
-	}
-
-	public void showOnlyNotAvailableDishes() {
-		availability = false;
-		showEnableColumn = true;
-		showDisableColumn = false;
-		showDeleteColumn = false;
-		showEditColumn = false;
-		dishes = dishService.getAllDishes(null, null, availability);
-		categories = dishService.getCategories(availability);
-		names = dishService.getDishNames(null, availability);
+		String showString =FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show");
+		show = Integer.parseInt(showString);
+		if(show == 1) {
+			availability = null;
+			showEnableColumn = true;
+			showDisableColumn = true;
+			showDeleteColumn = true;
+			showEditColumn = true;
+			dishes = dishService.getAllDishes(null, null, availability);
+			categories = dishService.getCategories(availability);
+			names = dishService.getDishNames(null, availability);
+		}else if(show == 2) {
+			availability = true;
+			showEnableColumn = false;
+			showDisableColumn = true;
+			showDeleteColumn = false;
+			showEditColumn = false;
+			dishes = dishService.getAllDishes(null, null, availability);
+			categories = dishService.getCategories(availability);
+			names = dishService.getDishNames(null, availability);
+		}else if(show == 3) {
+			availability = false;
+			showEnableColumn = true;
+			showDisableColumn = false;
+			showDeleteColumn = false;
+			showEditColumn = false;
+			dishes = dishService.getAllDishes(null, null, availability);
+			categories = dishService.getCategories(availability);
+			names = dishService.getDishNames(null, availability);
+		}
+		
 	}
 
 	public void getDishNames() {
@@ -125,11 +117,13 @@ public class DishManagedBean implements Serializable {
 	public void enable() {
 		dishService.availability(dish.getDishId(), true);
 		dishes = dishService.getAllDishes(category, dishName, availability);
+		messages.showInfoMessage("Enabled");
 	}
 
 	public void disable() {
 		dishService.availability(dish.getDishId(), false);
 		dishes = dishService.getAllDishes(category, dishName, availability);
+		messages.showInfoMessage("Disabled");
 	}
 
 	public void delete() {
@@ -261,6 +255,14 @@ public class DishManagedBean implements Serializable {
 
 	public void setPicture(String picture) {
 		this.picture = picture;
+	}
+
+	public int getShow() {
+		return show;
+	}
+
+	public void setShow(int show) {
+		this.show = show;
 	}
 	
 	

@@ -7,14 +7,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.ikubinfo.primefaces.model.admin.Order;
 import com.ikubinfo.primefaces.service.admin.OrderService;
 import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ShowAllOrdersManagedBean implements Serializable {
 
 	private static final long serialVersionUID = -146883774165759901L;
@@ -26,6 +27,7 @@ public class ShowAllOrdersManagedBean implements Serializable {
 	private Messages messages;
 
 	private List<Order> orders;
+	private int show;
 	private int orderId;
 	private Date startDate;
 	private Date endDate;
@@ -36,34 +38,28 @@ public class ShowAllOrdersManagedBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		showDelivered = true;
-		deliver = false;
-		showTotal = false;
-		orders = orderService.getAllOrders(deliver, startDate, endDate);
+		String showString =FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show");
+		show = Integer.parseInt(showString);
+		if(show == 1){
+			showDelivered = true;
+			deliver = null;
+			showTotal = false;
+			orders = orderService.getAllOrders(deliver, startDate, endDate);
+		}else if(show == 2){
+			showDelivered = true;
+			deliver = false;
+			showTotal = false;
+			orders = orderService.getAllOrders(deliver, startDate, endDate);
+		}else if(show== 3){
+			showDelivered = false;
+			showTotal = true;
+			deliver = true;
+			orders = orderService.getAllOrders(deliver, startDate, endDate);
+			total = orderService.getTotalPrice(startDate, endDate);
+		}
 	}
-
-	public void showOnlyUnDeliveredOrders() {
-		showDelivered = true;
-		deliver = false;
-		showTotal = false;
-		orders = orderService.getAllOrders(deliver, startDate, endDate);
-	}
-
-	public void showOnlyDeliveredOrders() {
-		showDelivered = false;
-		showTotal = true;
-		deliver = true;
-		orders = orderService.getAllOrders(deliver, startDate, endDate);
-		total = orderService.getTotalPrice(startDate, endDate);
-	}
-
-	public void viewAllOrders() {
-		showDelivered = true;
-		deliver = null;
-		showTotal = false;
-		orders = orderService.getAllOrders(deliver, startDate, endDate);
-	}
-
+	
+	
 	public void deliver() {
 		if (orderService.deliver(orderId)) {
 			orders = orderService.getAllOrders(deliver, startDate, endDate);
@@ -156,5 +152,15 @@ public class ShowAllOrdersManagedBean implements Serializable {
 	public void setTotal(double total) {
 		this.total = total;
 	}
+
+	public int getShow() {
+		return show;
+	}
+
+	public void setShow(int show) {
+		this.show = show;
+	}
+	
+	
 
 }

@@ -49,7 +49,7 @@ public class AddDishManagedBean implements Serializable {
 					if (dishService.insertDish(dish, adminId,fileName)) {
 						messages.showInfoMessage("Dish was added successfully");
 						dish = new Dish();
-						return "dish.xhtml";
+						return "dish.xhtml?show=1faces-redirect=true";
 					} else {
 						messages.showInfoMessage("Something went wrong");
 						return "addDish.xhtml";
@@ -65,7 +65,6 @@ public class AddDishManagedBean implements Serializable {
 		
 		return "addDish.xhtml";
 	}
-
 	
 	public DishService getDishService() {
 		return dishService;
@@ -107,4 +106,5 @@ public class AddDishManagedBean implements Serializable {
 		this.file = file;
 	}
 
+	
 }

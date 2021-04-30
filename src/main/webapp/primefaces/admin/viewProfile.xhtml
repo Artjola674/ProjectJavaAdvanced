@@ -6,83 +6,18 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/template.xhtml">
+	<ui:composition template="/template/admin/template.xhtml">
 
-		<ui:define name="header">
-			<h:form>
-				<p:megaMenu orientation="horizontal" autoDisplay="false">
-					<p:submenu label="Order">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View all orders" action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.viewAllOrders}"
-									immediate="true">
-								</p:menuitem>
-								<p:menuitem value="View only undelivered orders"
-									action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.showOnlyUnDeliveredOrders}"
-									immediate="true" />
-								<p:menuitem value="View only delivered orders"
-									action="allOrders.xhtml"
-									actionListener="#{showAllOrdersManagedBean.showOnlyDeliveredOrders}"
-									immediate="true">
-								</p:menuitem>
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Dish">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
-								<p:menuitem value="View all dishes" action="dish.xhtml"
-									actionListener="#{dishManagedBean.showAllDishes}"
-									immediate="true" />
-								<p:menuitem value="View only available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyAvailableDishes}"
-									immediate="true" />
-								<p:menuitem value="View only not available dishes"
-									action="dish.xhtml"
-									actionListener="#{dishManagedBean.showOnlyNotAvailableDishes}"
-									immediate="true" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Dish">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Add a new dish" action="addDish.xhtml" />
-								<p:menuitem value="View all dishes" action="dish.xhtml" />
-								<p:menuitem value="View only available dishes"
-									action="dish.xhtml" />
-								<p:menuitem value="View only not available dishes"
-									action="dish.xhtml" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="User" icon="pi pi-fw pi-users">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="View profile" action="viewProfile.xhtml" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-					<p:submenu label="Log out" style="float: right;">
-						<p:column>
-							<p:submenu label="">
-								<p:menuitem value="Log out" />
-							</p:submenu>
-						</p:column>
-					</p:submenu>
-				</p:megaMenu>
-			</h:form>
-		</ui:define>
 
 		<ui:define name="content">
 			<div align="center">
 
 				<p:growl id="growl" showDetail="true" />
-				<h:form id="profile" >
+				<h:form id="profile">
+					<br />
+					<br />
+					<br />
+					<br />
 					<p:panelGrid styleClass="panelgrid-dotted-border">
 						<f:facet name="header">
 							<p:row>
@@ -130,15 +65,19 @@
 						</p:row>
 
 					</p:panelGrid>
-
+					<br />
+					<br />
 					<p:commandButton value="Edit Admin" update="updateDialog"
-						process="@this" oncomplete="PF('EditDialog').show();">
+						icon="fa fa-fw fa-edit" process="@this"
+						oncomplete="PF('EditDialog').show();">
 
 						<f:setPropertyActionListener
 							target="#{adminProfileManagedBean.editAdmin}"
 							value="#{adminProfileManagedBean.admin}" />
 
 					</p:commandButton>
+					<br />
+					<br />
 				</h:form>
 				<p:dialog header="Edit Admin" id="updateDialog"
 					widgetVar="EditDialog" modal="true">
@@ -147,11 +86,17 @@
 						<h:panelGrid columns="2">
 							<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
 							<p:inputText id="firstName" required="true"
-								value="#{adminProfileManagedBean.editAdmin.firstName}"></p:inputText>
+								value="#{adminProfileManagedBean.editAdmin.firstName}"
+								validatorMessage="First name should have only letters.">
+								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+							</p:inputText>
 
 							<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
 							<p:inputText id="lastName" required="true"
-								value="#{adminProfileManagedBean.editAdmin.lastName}"></p:inputText>
+								value="#{adminProfileManagedBean.editAdmin.lastName}"
+								validatorMessage="Last name should have only letters.">
+								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+							</p:inputText>
 
 							<p:outputLabel for="email" value="Email"></p:outputLabel>
 							<p:outputLabel id="email" required="true"
@@ -166,7 +111,11 @@
 							<p:password id="newPassword"
 								value="#{adminProfileManagedBean.newPassword}" toggleMask="true"
 								redisplay="true" feedback="true" inline="true"
-								match="confirmNewPassword" />
+								match="confirmNewPassword"
+								validatorMessage="Password should have at least 8 characters and at most 32 characters. it should ontain a digit, a lower case alphabet, an upper case alphabet and a special character">
+								<f:validateRegex
+									pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=])(?=\S+$).{8,32}$" />
+							</p:password>
 
 							<p:outputLabel for="confirmNewPassword"
 								value="Confirm New Password"></p:outputLabel>
@@ -174,16 +123,11 @@
 								value="#{adminProfileManagedBean.newPassword}" toggleMask="true"
 								redisplay="true" feedback="true" inline="true" />
 
-							<p:commandButton process="updateDialog" update="growl @form profile"
-								value="Save" actionListener="#{adminProfileManagedBean.save()}"
+							<p:commandButton process="updateDialog"
+								update="growl @form profile" value="Save" icon="pi pi-save"
+								actionListener="#{adminProfileManagedBean.save()}"
 								oncomplete="PF('EditDialog').hide();">
 							</p:commandButton>
-
-							<p:messages id="messages" showDetail="true">
-								<p:autoUpdate />
-							</p:messages>
-
-							
 
 						</h:panelGrid>
 					</h:form>
