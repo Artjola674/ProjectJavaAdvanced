@@ -17,7 +17,7 @@
 				<h:form id="form">
 
 					<p:outputLabel value="Category " for="category" />
-					<p:selectOneMenu id="category" value="#{dishManagedBean.dishDataModel.category}"
+					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax listener="#{dishManagedBean.getDishNames()}"
 							update="dishName" />
@@ -28,25 +28,24 @@
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Dish Name " for="dishName" />
-					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishDataModel.dishName}"
+					<p:selectOneMenu id="dishName" value="#{dishManagedBean.dishName}"
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems id="dishNames" value="#{dishManagedBean.names}" />
-						
+
 					</p:selectOneMenu>
 
 					<p:commandButton icon="fa fa-fw fa-search"
-						action="#{dishManagedBean.dishDataModel.filter}" update="dataTable"
+						action="#{dishManagedBean.search}" update="dataTable"
 						immediate="true">
-						<f:setPropertyActionListener target="#{dishManagedBean.dishDataModel.availability}"
-								value="#{dishManagedBean.availability}" />
 					</p:commandButton>
 
 				</h:form>
-				<p:dataTable id="dataTable" binding="#{dishManagedBean.dishDataModel.dataTable}"
-				value="#{dishManagedBean.dishDataModel}"
-					var="dish" paginator="true" rows="3" lazy="true">
+				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
+					var="dish" paginator="true" rows="4" styleClass="p-mt-2"
+					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
+					sortOrder="ascending">
 
 					<p:column headerText="Dish Id">
 						<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
@@ -85,29 +84,45 @@
 
 					<p:column headerText="Disable"
 						visible="#{dishManagedBean.showDisableColumn}">
-						<p:commandButton icon="fa fa-fw fa-check"
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-warning"
 							disabled="#{!dish.availability}"
 							action="#{dishManagedBean.disable}" immediate="true"
 							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
 								value="#{dish}" />
 						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
 					<p:column headerText="Enable"
 						visible="#{dishManagedBean.showEnableColumn}">
-						<p:commandButton icon="fa fa-fw fa-check"
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
 							disabled="#{dish.availability}"
 							action="#{dishManagedBean.enable}" immediate="true"
 							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
 								value="#{dish}" />
 						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
 					<p:column headerText="Delete"
 						visible="#{dishManagedBean.showDeleteColumn}">
-						<p:commandButton icon="fa fa-fw fa-remove" immediate="true"
+						<p:commandButton icon="fa fa-fw fa-remove" immediate="true" styleClass="ui-button-danger"
 							action="#{dishManagedBean.delete}" update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
@@ -191,4 +206,5 @@
 	</ui:composition>
 </h:body>
 </html>
+
 

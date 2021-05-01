@@ -2,6 +2,7 @@ package com.ikubinfo.primefaces.managedbean.admin;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +30,7 @@ public class AddDishManagedBean implements Serializable {
 	private Dish dish;
 	private int adminId;
 	private UploadedFile file;
+	private String imageName;
 
 	@PostConstruct
 	public void init() {
@@ -40,13 +42,23 @@ public class AddDishManagedBean implements Serializable {
 		
 		if (file != null) {
 			if(file.getFileName() != null) {
+				
 				try {
 					String fileName = file.getFileName();
-					this.dish.setPicture(fileName);
+					List<String> images = dishService.getImages();
+					for(String image:images) {
+						if(fileName.equals(image)) {
+							String randomString = dishService.generateRandomImageName();
+							imageName = randomString.concat(fileName);
+							break;
+						}else {
+							imageName = fileName;
+						}
+					}
 					java.io.InputStream inputStream = file.getInputStream();
-					dishService.savePicture(inputStream, fileName);
+					dishService.savePicture(inputStream, imageName);
 					
-					if (dishService.insertDish(dish, adminId,fileName)) {
+					if (dishService.insertDish(dish, adminId,imageName)) {
 						messages.showInfoMessage("Dish was added successfully");
 						dish = new Dish();
 						return "dish.xhtml?show=1faces-redirect=true";
@@ -104,6 +116,14 @@ public class AddDishManagedBean implements Serializable {
 
 	public void setFile(UploadedFile file) {
 		this.file = file;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	

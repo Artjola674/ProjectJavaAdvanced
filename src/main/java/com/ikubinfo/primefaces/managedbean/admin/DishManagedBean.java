@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.file.UploadedFile;
 
-import com.ikubinfo.primefaces.managedbean.admin.lazy.DishLazyDataModel;
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.service.admin.DishService;
 import com.ikubinfo.primefaces.util.Messages;
@@ -28,10 +27,6 @@ public class DishManagedBean implements Serializable {
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
-	@ManagedProperty(value = "#{dishLazyDataModel}")
-	private DishLazyDataModel dishDataModel;
-
 
 	private List<Dish> dishes;
 	private int show;
@@ -97,9 +92,19 @@ public class DishManagedBean implements Serializable {
 			if(file.getFileName() != null) {
 				try {
 					String fileName = file.getFileName();
-					picture = fileName;
+					List<String> images = dishService.getImages();
+					for(String image:images) {
+						if(fileName.equals(image)) {
+							String randomString = dishService.generateRandomImageName();
+							picture = randomString.concat(fileName);
+							break;
+						}else {
+							picture = fileName;
+						}
+					}
+					
 					java.io.InputStream inputStream = file.getInputStream();
-					dishService.savePicture(inputStream, fileName);
+					dishService.savePicture(inputStream, picture);
 						
 				} catch (IOException e) {
 					messages.showInfoMessage("Something went wrong");
@@ -268,14 +273,6 @@ public class DishManagedBean implements Serializable {
 
 	public void setShow(int show) {
 		this.show = show;
-	}
-
-	public DishLazyDataModel getDishDataModel() {
-		return dishDataModel;
-	}
-
-	public void setDishDataModel(DishLazyDataModel dishDataModel) {
-		this.dishDataModel = dishDataModel;
 	}
 	
 	

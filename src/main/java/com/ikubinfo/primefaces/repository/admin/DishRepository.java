@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Repository;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.repository.mapper.admin.DishRowMapper;
-import com.ikubinfo.primefaces.service.admin.request.DishListRequest;
 
 @Repository
 public class DishRepository {
@@ -42,7 +42,7 @@ public class DishRepository {
 	public static final String GET_DISH_NAME = "select distinct dish_name from dish where deleted = 'false' ";
 	private static final String AVAILABILITY_UPDATE = "update dish set availability = :availability where dish_id = :dishId";
 	private static final String DELETE_DISH = "update dish set deleted = 'true' where dish_id = :dishId";
-	private static final String COUNT_DISHES = "Select count(dish_id) from dish where 1=1 ";
+	public static final String GET_IMAGES = "select distinct picture from dish where deleted = 'false' ";
 	
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
@@ -150,69 +150,23 @@ public class DishRepository {
 		IOUtils.copy(inputStream, output);
 	}
 	
-	public int getDishCount(DishListRequest request) {
-
-		LOG.info("Counting dishes for request {}", request);
-
-		Map<String, Object> params = new HashMap<>();
-		if (!Objects.isNull(request.getCategory())) {
-			params.put("category", "%" + request.getCategory().toLowerCase() + "%");
-		}
-		if (!Objects.isNull(request.getDishName())) {
-			params.put("dishName", "%" + request.getDishName().toLowerCase() + "%");
-		}
-		if (!Objects.isNull(request.getAvailability())) {
-			params.put("availability", request.getAvailability());
-		}
+	public List<String> getImages() {
 		
-		String queryString = COUNT_DISHES;
-
-		if (!Objects.isNull(request.getCategory()) && !request.getCategory().isEmpty()) {
-			queryString = queryString.concat(" and  category like  :category ");
-		}
-		if (!Objects.isNull(request.getDishName()) && !request.getDishName().isEmpty()) {
-			queryString = queryString.concat(" and  dish_name like  :dishName ");
-		}
-		if (!Objects.isNull(request.getAvailability())) {
-			queryString = queryString.concat(" and availability = :availability ");
-		}
-		
-
-		LOG.info("SQL ->  {} ", queryString);
-		return namedParameterJdbcTemplate.queryForObject(queryString, params, Integer.class);
+		return jdbcTemplate.queryForList(GET_IMAGES, String.class);
 	}
+	
+	public String generateRandomImageName() {
+		 int leftLimit = 97; 
+		    int rightLimit = 122;
+		    int targetStringLength = 10;
+		    Random random = new Random();
 
-	public List<Dish> getDishList(DishListRequest request) {
-		LOG.info("Filtering dishes for request {}", request);
-		Map<String, Object> params = new HashMap<>();
-		if (!Objects.isNull(request.getCategory())) {
-			params.put("category", "%" + request.getCategory().toLowerCase() + "%");
-		}
-		if (!Objects.isNull(request.getDishName())) {
-			params.put("dishName", "%" + request.getDishName().toLowerCase() + "%");
-		}
-		if (!Objects.isNull(request.getAvailability())) {
-			params.put("availability", request.getAvailability());
-		}
-		params.put("row_count", request.getPageSize());
-		params.put("row_to_skip", request.getFirst());
+		    String generatedString = random.ints(leftLimit, rightLimit + 1)
+		      .limit(targetStringLength)
+		      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+		      .toString();
 
-		String queryString = GET_ALL_DISHES;
-
-		if (!Objects.isNull(request.getCategory()) && !request.getCategory().isEmpty()) {
-			queryString = queryString.concat(" and  category like  :category ");
-		}
-		if (!Objects.isNull(request.getDishName()) && !request.getDishName().isEmpty()) {
-			queryString = queryString.concat(" and  dish_name like  :dishName ");
-		}
-		if (!Objects.isNull(request.getAvailability())) {
-			queryString = queryString.concat(" and availability = :availability ");
-		}
-
-		queryString = queryString.concat(" LIMIT :row_count OFFSET :row_to_skip");
-
-		LOG.info("SQL ->  {} ", queryString);
-		return namedParameterJdbcTemplate.query(queryString, params, new DishRowMapper());
+		   return generatedString;
 	}
-
+	
 }
