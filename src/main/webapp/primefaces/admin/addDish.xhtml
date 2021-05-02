@@ -9,13 +9,16 @@
 	<ui:composition template="/template/admin/template.xhtml">
 
 		<ui:define name="content">
-			<div class="addForm" align="center">
+			<div align="center">
 
 				<p:growl id="growl" showDetail="true" />
-				<h:panelGrid column="2" columnClasses="centered">
-
-					<h:form enctype="multipart/form-data">
-						<h2>Add a new dish</h2>
+				<h:form enctype="multipart/form-data">
+					<br />
+					<br />
+					<br />
+					<br />
+					<h2>Add a new dish</h2>
+					<h:panelGrid columns="2">
 						<p:outputLabel for="category" value="Category" />
 						<p:inputText id="category" required="true"
 							value="#{addDishManagedBean.dish.category}"
@@ -23,17 +26,12 @@
 							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 						</p:inputText>
 
-						<br></br>
-						<br></br>
-
 						<p:outputLabel for="dishName" value="Name" />
 						<p:inputText id="dishName" required="true"
 							value="#{addDishManagedBean.dish.dishName}"
 							validatorMessage="Dish name should have only letters.">
 							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 						</p:inputText>
-						<br></br>
-						<br></br>
 
 						<p:outputLabel for="price" value="Price" />
 						<p:inputNumber id="price" required="true"
@@ -41,21 +39,14 @@
 							symbolPosition="s" decimalSeparator="." minValue="0"
 							maxValue="100" decimalPlaces="2">
 						</p:inputNumber>
-						<br></br>
-						<br></br>
 
 						<p:outputLabel for="description" value="Description" />
 						<p:inputTextarea id="description" required="true"
 							value="#{addDishManagedBean.dish.description}"></p:inputTextarea>
-						<br></br>
-						<br></br>
 
 						<p:outputLabel value="Picture" for="picture" />
-
 						<p:fileUpload id="picture" value="#{addDishManagedBean.file}"
 							mode="simple" skinSimple="true" />
-						<br></br>
-						<br></br>
 
 						<div align="center">
 							<p:commandButton value="Save" style="align: center"
@@ -64,8 +55,8 @@
 							</p:commandButton>
 						</div>
 
-					</h:form>
-				</h:panelGrid>
+					</h:panelGrid>
+				</h:form>
 			</div>
 
 		</ui:define>

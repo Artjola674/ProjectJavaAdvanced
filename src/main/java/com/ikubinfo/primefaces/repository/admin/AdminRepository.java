@@ -17,7 +17,7 @@ import com.ikubinfo.primefaces.repository.mapper.admin.AdminRowMapper;
 public class AdminRepository {
 	Logger LOG = LoggerFactory.getLogger(AdminRepository.class);
 
-	private static final String GET_ADMIN_ID_BY_EMAIL = "select admin_id from admin where email = ? ";
+	private static final String GET_ADMIN_ID_BY_EMAIL = "select admin_id from admin where lower(email) like lower(?) ";
 	private static final String GET_ADMIN_BY_ID = "select admin_id, first_name, last_name, email, password, last_update from admin where admin_id = ? ";
 	private static final String UPDATE_ADMIN = "update admin set first_name = :firstName, last_name = :lastName, password = :password where admin_id = :adminId ";
 

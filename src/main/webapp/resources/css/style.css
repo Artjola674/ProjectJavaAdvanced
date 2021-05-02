@@ -6,10 +6,6 @@
 	bottom:5px;
 }
 
-.centered {
-text-align: right;
-margin-left: 50%;
-}
 .panelgrid-dotted-border{
     border-collapse: separate;
     border-spacing: 2px;

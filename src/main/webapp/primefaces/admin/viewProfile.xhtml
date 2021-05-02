@@ -114,7 +114,7 @@
 								match="confirmNewPassword"
 								validatorMessage="Password should have at least 8 characters and at most 32 characters. it should ontain a digit, a lower case alphabet, an upper case alphabet and a special character">
 								<f:validateRegex
-									pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=])(?=\S+$).{8,32}$" />
+									pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+.=])(?=\S+$).{8,32}$" />
 							</p:password>
 
 							<p:outputLabel for="confirmNewPassword"
@@ -124,11 +124,11 @@
 								redisplay="true" feedback="true" inline="true" />
 
 							<p:commandButton process="updateDialog"
-								update="growl @form profile" value="Save" icon="pi pi-save"
+								update="growl @form profile"  value="Save" icon="pi pi-save"
 								actionListener="#{adminProfileManagedBean.save()}"
 								oncomplete="PF('EditDialog').hide();">
 							</p:commandButton>
-
+							
 						</h:panelGrid>
 					</h:form>
 

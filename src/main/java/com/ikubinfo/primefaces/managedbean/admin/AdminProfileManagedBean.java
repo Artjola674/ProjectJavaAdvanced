@@ -1,5 +1,7 @@
 package com.ikubinfo.primefaces.managedbean.admin;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -11,13 +13,18 @@ import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class AdminProfileManagedBean {
+public class AdminProfileManagedBean implements Serializable{
+
+	private static final long serialVersionUID = -3483627202295848834L;
 
 	@ManagedProperty(value = "#{adminService}")
 	private AdminService adminService;
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
+	
+	@ManagedProperty(value = "#{welcomeManagedBean}")
+	private WelcomeManagedBean welcomeManagedBean;
 
 	private Admin admin;
 	private Admin editAdmin;
@@ -26,7 +33,7 @@ public class AdminProfileManagedBean {
 	
 	@PostConstruct
 	public void init() {
-		admin = adminService.getAdmin(adminService.getAdminId("artjola.kotorri@gmail.com"));
+		admin = adminService.getAdmin(adminService.getAdminId(welcomeManagedBean.getEmail()));
 	}
 	
 	public void save() {
@@ -104,6 +111,14 @@ public class AdminProfileManagedBean {
 
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
+	}
+
+	public WelcomeManagedBean getWelcomeManagedBean() {
+		return welcomeManagedBean;
+	}
+
+	public void setWelcomeManagedBean(WelcomeManagedBean welcomeManagedBean) {
+		this.welcomeManagedBean = welcomeManagedBean;
 	}
 	
 	

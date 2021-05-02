@@ -11,6 +11,7 @@ public class Order {
 	private String clientName;
 	private String clientAddress;
 	private String clientPhoneNumber;
+	private String deliveryDetail;
 	
 	public Order() {
 		super();
@@ -80,6 +81,14 @@ public class Order {
 		this.clientPhoneNumber = clientPhoneNumber;
 	}
 
+	public String getDeliveryDetail() {
+		return deliveryDetail;
+	}
+
+	public void setDeliveryDetail(String deliveryDetail) {
+		this.deliveryDetail = deliveryDetail;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -88,6 +97,7 @@ public class Order {
 		result = prime * result + ((clientName == null) ? 0 : clientName.hashCode());
 		result = prime * result + ((clientPhoneNumber == null) ? 0 : clientPhoneNumber.hashCode());
 		result = prime * result + (delivered ? 1231 : 1237);
+		result = prime * result + ((deliveryDetail == null) ? 0 : deliveryDetail.hashCode());
 		result = prime * result + ((orderDate == null) ? 0 : orderDate.hashCode());
 		result = prime * result + orderId;
 		result = prime * result + ((quantityAndName == null) ? 0 : quantityAndName.hashCode());
@@ -123,6 +133,11 @@ public class Order {
 			return false;
 		if (delivered != other.delivered)
 			return false;
+		if (deliveryDetail == null) {
+			if (other.deliveryDetail != null)
+				return false;
+		} else if (!deliveryDetail.equals(other.deliveryDetail))
+			return false;
 		if (orderDate == null) {
 			if (other.orderDate != null)
 				return false;
@@ -144,10 +159,9 @@ public class Order {
 	public String toString() {
 		return "Order [orderId=" + orderId + ", totalPrice=" + totalPrice + ", orderDate=" + orderDate + ", delivered="
 				+ delivered + ", quantityAndName=" + quantityAndName + ", clientName=" + clientName + ", clientAddress="
-				+ clientAddress + ", clientPhoneNumber=" + clientPhoneNumber + "]";
+				+ clientAddress + ", clientPhoneNumber=" + clientPhoneNumber + ", deliveryDetail=" + deliveryDetail
+				+ "]";
 	}
 
-	
-	
 	
 }

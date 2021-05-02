@@ -26,6 +26,9 @@ public class AddDishManagedBean implements Serializable {
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
+	
+	@ManagedProperty(value = "#{welcomeManagedBean}")
+	private WelcomeManagedBean welcomeManagedBean;
 
 	private Dish dish;
 	private int adminId;
@@ -35,7 +38,7 @@ public class AddDishManagedBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		dish = new Dish();
-		adminId = dishService.getAdminId("artjola.kotorri@gmail.com");
+		adminId = dishService.getAdminId(welcomeManagedBean.getEmail());
 	}
 
 	public String insertDish() {
@@ -124,6 +127,14 @@ public class AddDishManagedBean implements Serializable {
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+
+	public WelcomeManagedBean getWelcomeManagedBean() {
+		return welcomeManagedBean;
+	}
+
+	public void setWelcomeManagedBean(WelcomeManagedBean welcomeManagedBean) {
+		this.welcomeManagedBean = welcomeManagedBean;
 	}
 
 	

@@ -15,14 +15,14 @@
 				<p:submenu label="Order" icon="fa fa-fw fa-shopping-cart">
 					<p:column>
 						<p:submenu label="">
-							<p:menuitem value="View all orders"
+							<p:menuitem value="View returned orders"
 								action="allOrders.xhtml?show=1faces-redirect=true"
 								immediate="true">
 							</p:menuitem>
-							<p:menuitem value="View only undelivered orders"
+							<p:menuitem value="View unsend orders"
 								action="allOrders.xhtml?show=2faces-redirect=true"
 								immediate="true" />
-							<p:menuitem value="View only delivered orders"
+							<p:menuitem value="View delivered orders"
 								action="allOrders.xhtml?show=3faces-redirect=true"
 								immediate="true">
 							</p:menuitem>
@@ -42,6 +42,14 @@
 						</p:submenu>
 					</p:column>
 				</p:submenu>
+				<p:submenu label="Deliveries" icon="fa fa-fw fa-users">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Add a new delivery" action="addDelivery.xhtml" immediate="true"/>
+							<p:menuitem value="View all deliveries" action="delivery.xhtml?show=2faces-redirect=true" immediate="true"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
 				<p:submenu label="User" icon="fa fa-user">
 					<p:column>
 						<p:submenu label="">
@@ -49,10 +57,10 @@
 						</p:submenu>
 					</p:column>
 				</p:submenu>
-				<p:submenu icon="fa fa-fw fa-sign-out" style="float: right;">
+				<p:submenu label="Log out" icon="fa fa-fw fa-sign-out" style="float: right;">
 					<p:column>
 						<p:submenu label="">
-							<p:menuitem value="Log out" />
+							<p:menuitem value="Log out" actionListener="#{welcomeManagedBean.logout}" />
 						</p:submenu>
 					</p:column>
 				</p:submenu>

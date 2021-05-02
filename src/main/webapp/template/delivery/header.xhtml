@@ -1,0 +1,52 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<body>
+	<ui:composition>
+		<h:form>
+			<p:megaMenu id="menu" orientation="horizontal" autoDisplay="false">
+				<p:submenu label="Order" icon="fa fa-fw fa-shopping-cart">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View returned orders"
+								action="orders.xhtml?show=1faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
+							<p:menuitem value="View undelivered orders"
+								action="orders.xhtml?show=2faces-redirect=true"
+								immediate="true" />
+							<p:menuitem value="View delivered orders"
+								action="orders.xhtml?show=3faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				
+				<p:submenu label="User" icon="fa fa-user">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View profile" action="deliveryProfile.xhtml" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Log out" icon="fa fa-fw fa-sign-out" style="float: right;">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Log out" actionListener="#{welcomeManagedBean.logout}"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+			</p:megaMenu>
+			<p:sticky target="menu"/>
+		</h:form>
+	</ui:composition>
+</body>
+</html>
