@@ -27,14 +27,14 @@
 							validatorMessage="First name should have only letters.">
 							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 						</p:inputText>
-						
+
 						<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
 						<p:inputText id="lastName" required="true"
 							value="#{addDeliveryManagedBean.delivery.lastName}"
 							validatorMessage="Last name should have only letters.">
 							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 						</p:inputText>
-						
+
 						<p:outputLabel for="email" value="Email"></p:outputLabel>
 						<p:inputText id="email" required="true"
 							value="#{addDeliveryManagedBean.delivery.email}"
@@ -42,7 +42,7 @@
 							<f:validateRegex
 								pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 						</p:inputText>
-						
+
 						<p:outputLabel for="password" value="Password"></p:outputLabel>
 						<p:inputText id="password" required="true"
 							value="#{addDeliveryManagedBean.delivery.password}"
@@ -50,19 +50,20 @@
 							<f:validateRegex
 								pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+.=])(?=\S+$).{8,32}$" />
 						</p:inputText>
-						
+
 						<p:outputLabel for="phoneNumber" value="Phone Number"></p:outputLabel>
 						<p:inputText id="phoneNumber" required="true"
 							value="#{addDeliveryManagedBean.delivery.phoneNumber}"
 							validatorMessage="Phone number is not valid.">
 							<f:validateRegex pattern="^(((067|068|069)\d{7})){1}$" />
 						</p:inputText>
-						
-						<div align="center">
-						
-							<p:commandButton update="growl @this" icon="pi pi-save" value="Save"
-								action="#{addDeliveryManagedBean.insert}"></p:commandButton>
-						</div>
+
+
+						<br />
+						<br />
+						<p:commandButton update="growl @this" icon="pi pi-save"
+							value="Save" action="#{addDeliveryManagedBean.insert}"></p:commandButton>
+
 
 
 					</h:panelGrid>

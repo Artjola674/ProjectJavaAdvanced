@@ -43,7 +43,6 @@ public class OrdersManagedBean implements Serializable{
 	private boolean showReturnedColumn;
 	private Delivery delivery;
 	private int orderId;
-	
 	private Boolean deliver;
 	private Boolean returned;
 	

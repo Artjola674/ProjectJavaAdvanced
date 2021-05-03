@@ -65,6 +65,8 @@ public class Delivery {
 		this.phoneNumber = phoneNumber;
 	}
 
+	
+	
 	public String getStatus() {
 		return status;
 	}
@@ -163,6 +165,7 @@ public class Delivery {
 				+ ", lastUpdate=" + lastUpdate + ", working=" + working + "]";
 	}
 
+	
 	
 	
 }

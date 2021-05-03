@@ -14,23 +14,33 @@ import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class DeliveryProfileManagedBean implements Serializable{
+public class DeliveryProfileManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 8283272265375496751L;
-	
+
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	@ManagedProperty(value = "#{deliveryService}")
 	private DeliveryService deliveryService;
-	
+
 	@ManagedProperty(value = "#{welcomeManagedBean}")
 	private WelcomeManagedBean welcomeManagedBean;
-	
+
 	private Delivery delivery;
-	
+
 	@PostConstruct
 	public void init() {
+		delivery = deliveryService.getDelivery(welcomeManagedBean.getEmail());
+	}
+
+	public void addStatusToFree() {
+		deliveryService.changeStatus(true, delivery.getEmail());
+		delivery = deliveryService.getDelivery(welcomeManagedBean.getEmail());
+	}
+
+	public void addStatusToBusy() {
+		deliveryService.changeStatus(false, delivery.getEmail());
 		delivery = deliveryService.getDelivery(welcomeManagedBean.getEmail());
 	}
 
@@ -66,5 +76,4 @@ public class DeliveryProfileManagedBean implements Serializable{
 		this.welcomeManagedBean = welcomeManagedBean;
 	}
 
-	
 }

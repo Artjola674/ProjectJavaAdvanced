@@ -27,7 +27,9 @@ public class OrderService {
 		orders = orderRepository.getAllOrders(delivered,startDate,endDate,sent,returned);
 		for (Order order : orders) {
 			orderRepository.getOrderQuantity(order);
-			orderRepository.getOrderDelivery (order);
+			if(order.getSent() == true) {
+				orderRepository.getOrderDelivery (order);
+			}	
 		}
 
 		return orders;
@@ -55,7 +57,17 @@ public class OrderService {
 		return false;
 	}
 	
+	@Transactional
 	public List<Order> getAllOrdersOfADelivery(Boolean delivered, Date startDate, Date endDate,Boolean returned,int deliveryId){
-		return orderRepository.getAllOrdersOfADelivery(delivered, startDate, endDate, returned, deliveryId);
+		List<Order> orders = new ArrayList<>();
+		orders = orderRepository.getAllOrdersOfADelivery(delivered, startDate, endDate, returned, deliveryId);
+		for (Order order : orders) {
+			orderRepository.getOrderQuantity(order);
+			if(order.getSent() == true) {
+				orderRepository.getOrderDelivery (order);
+			}	
+		}
+
+		return orders;
 	}
 }

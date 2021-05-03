@@ -75,7 +75,7 @@
 
 					<p:column headerText="Delivered"
 						visible="#{ordersManagedBean.showDeliveredColumn}">
-						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-warning"
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
 							action="#{ordersManagedBean.deliver}" immediate="true"
 							update="dataTable">
 							<p:confirm header="Confirmation" message="Are you sure?"
@@ -93,7 +93,7 @@
 
 					<p:column headerText="Returned"
 						visible="#{ordersManagedBean.showReturnedColumn}">
-						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-danger"  
 							action="#{ordersManagedBean.returned}" immediate="true"
 							update="dataTable">
 							<p:confirm header="Confirmation" message="Are you sure?"

@@ -60,7 +60,7 @@ public class DeliveryRepository {
 		return updatedCount > 0;
 	}
 
-	public void changeStatus(String status, String email) {
+	public void changeStatus(boolean status, String email) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("status", status);
 		params.put("email", email);
@@ -87,15 +87,15 @@ public class DeliveryRepository {
 		return updatedCount > 0;
 	}
 
-	public List<Delivery> getAllDeliveries(String status, Boolean working) {
+	public List<Delivery> getAllDeliveries(Boolean status, Boolean working) {
 		Map<String, Object> params = new HashMap<>();
-		params.put("status", "%" + status + "%");
+		params.put("status", status);
 		params.put("working", working);
 
 		String queryString = GET_ALL_DELIVERIES;
 
-		if (!Objects.isNull(status) && !status.isEmpty()) {
-			queryString = queryString.concat(" and  status like  :status ");
+		if (!Objects.isNull(status)) {
+			queryString = queryString.concat(" and  status = :status ");
 		}
 		if (!Objects.isNull(working)) {
 			queryString = queryString.concat(" and  working =  :working ");

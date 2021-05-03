@@ -32,7 +32,7 @@
 					</p:calendar>
 
 					<p:commandButton icon="fa fa-fw fa-search"
-						action="#{showAllOrdersManagedBean.search()}" update="dataTable"
+						action="#{showAllOrdersManagedBean.search()}" update="dataTable total"
 						immediate="true">
 					</p:commandButton>
 
@@ -82,6 +82,11 @@
 						<p:button value="Send" outcome="delivery.xhtml?id=#{order.orderId}">
 						<f:param name="show" value="1"></f:param>
 						</p:button>
+					</p:column>
+					
+					<p:column id="status" headerText="Status"
+						visible="#{showAllOrdersManagedBean.showStatus}">
+						<p:outputLabel value="#{order.status}"></p:outputLabel>
 					</p:column>
 
 				</p:dataTable>

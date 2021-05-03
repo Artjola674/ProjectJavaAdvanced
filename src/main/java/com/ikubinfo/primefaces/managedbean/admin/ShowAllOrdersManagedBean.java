@@ -34,6 +34,7 @@ public class ShowAllOrdersManagedBean implements Serializable {
 	private boolean showTotal;
 	private boolean showSend;
 	private boolean showDeliveryColumn;
+	private boolean showStatus;
 	private Boolean deliver;
 	private double total;
 	private Boolean sent;
@@ -51,12 +52,8 @@ public class ShowAllOrdersManagedBean implements Serializable {
 			showTotal = false;
 			sent = true;
 			returned = true;
-			System.out.println("1");
+			showStatus = false;
 			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
-			for(Order order:orders) {
-				System.out.println("1");
-				System.out.println(order);
-			}
 		}else if(show == 2){
 			showDeliveryColumn = false;
 			returned = false;
@@ -64,11 +61,8 @@ public class ShowAllOrdersManagedBean implements Serializable {
 			deliver = false;
 			showTotal = false;
 			sent = false;
+			showStatus = false;
 			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
-			for(Order order:orders) {
-				System.out.println("2");
-				System.out.println(order);
-			}
 		}else if(show== 3){
 			showDeliveryColumn = true;
 			showSend = false;
@@ -76,12 +70,18 @@ public class ShowAllOrdersManagedBean implements Serializable {
 			deliver = true;
 			sent = true;
 			returned = false;
+			showStatus = false;
 			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
 			total = orderService.getTotalPrice(startDate, endDate);
-			for(Order order:orders) {
-				System.out.println("3");
-				System.out.println(order);
-			}
+		}else if(show== 4){
+			showDeliveryColumn = true;
+			showSend = false;
+			showTotal = false;
+			deliver = null;
+			sent = null;
+			returned = null;
+			showStatus = true;
+			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
 		}
 	}
 
@@ -226,6 +226,14 @@ public class ShowAllOrdersManagedBean implements Serializable {
 
 	public void setShowDeliveryColumn(boolean showDeliveryColumn) {
 		this.showDeliveryColumn = showDeliveryColumn;
+	}
+
+	public boolean isShowStatus() {
+		return showStatus;
+	}
+
+	public void setShowStatus(boolean showStatus) {
+		this.showStatus = showStatus;
 	}
 
 	

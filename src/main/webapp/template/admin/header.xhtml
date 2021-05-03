@@ -26,6 +26,10 @@
 								action="allOrders.xhtml?show=3faces-redirect=true"
 								immediate="true">
 							</p:menuitem>
+							<p:menuitem value="View all orders"
+								action="allOrders.xhtml?show=4faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
 						</p:submenu>
 					</p:column>
 				</p:submenu>
@@ -60,7 +64,7 @@
 				<p:submenu label="Log out" icon="fa fa-fw fa-sign-out" style="float: right;">
 					<p:column>
 						<p:submenu label="">
-							<p:menuitem value="Log out" actionListener="#{welcomeManagedBean.logout}" />
+							<p:menuitem value="Log out" action="#{welcomeManagedBean.logout}" immediate="true"/>
 						</p:submenu>
 					</p:column>
 				</p:submenu>

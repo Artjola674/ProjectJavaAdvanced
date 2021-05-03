@@ -26,7 +26,7 @@ public class OrderRepository {
 
 	Logger LOG = LoggerFactory.getLogger(OrderRepository.class);
 
-	private static final String GET_ALL_ORDERS = "select order_id, total_price, delivered,order_date, client.first_name, client.last_name,client.address,client.phone_number"
+	private static final String GET_ALL_ORDERS = "select order_id, total_price, delivered,order_date, sent,returned,delivered, client.first_name, client.last_name,client.address,client.phone_number"
 			+ " from order_table inner join client on order_table.client_id = client.client_id where 1=1 ";
 	private static final String GET_ORDER_QUANTITY = "select order_dish.quantity,dish.dish_name\r\n"
 			+ "from order_dish inner join order_table on order_table.order_id = order_dish.order_id\r\n"
@@ -81,6 +81,7 @@ public class OrderRepository {
 		return namedParameterJdbcTemplate.query(queryString, params, new OrderRowMapper());
 
 	}
+	
 	
 	public List<Order> getAllOrdersOfADelivery(Boolean delivered, Date startDate, Date endDate,Boolean returned,int deliveryId) {
 
@@ -169,7 +170,7 @@ public class OrderRepository {
 	
 	public void getOrderDelivery(Order order) {
 		String toReturn = jdbcTemplate.queryForObject(GET_ORDER_DELIVERY, new Object[] {order.getOrderId()}, (rs, rownum) -> {
-			return ((((rs.getString("first_name").concat(" -> ")).concat(String.valueOf(rs.getInt("last_name")))).concat("\\n")).concat(rs.getString("phone_number")));
+			return ((((rs.getString("first_name").concat(" ")).concat(rs.getString("last_name"))).concat("\n")).concat(rs.getString("phone_number")));
 		});
 		
 		order.setDeliveryDetail(toReturn);

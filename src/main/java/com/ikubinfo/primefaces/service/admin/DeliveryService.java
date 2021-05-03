@@ -3,7 +3,6 @@ package com.ikubinfo.primefaces.service.admin;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ikubinfo.primefaces.model.admin.Delivery;
 import com.ikubinfo.primefaces.repository.admin.DeliveryRepository;
@@ -26,7 +25,7 @@ public class DeliveryService {
 		return deliveryRepository.save(delivery);
 	}
 	
-	public void changeStatus(String status, String email) {
+	public void changeStatus(boolean status, String email) {
 		deliveryRepository.changeStatus(status, email);
 	}
 
@@ -34,7 +33,7 @@ public class DeliveryService {
 		return deliveryRepository.insert(delivery);
 	}
 
-	public List<Delivery> getAllDeliveries(String status, Boolean working) {
+	public List<Delivery> getAllDeliveries(Boolean status, Boolean working) {
 		return deliveryRepository.getAllDeliveries(status,working);
 	}
 
@@ -49,6 +48,8 @@ public class DeliveryService {
 	public List<String> getDeliveriesEmail() {
 		return deliveryRepository.getDeliveriesEmail();
 	}
+
+	
 	
 	
 

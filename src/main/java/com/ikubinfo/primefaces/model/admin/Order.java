@@ -12,6 +12,8 @@ public class Order {
 	private String clientAddress;
 	private String clientPhoneNumber;
 	private String deliveryDetail;
+	private Boolean sent;
+	private String status;
 	
 	public Order() {
 		super();
@@ -89,6 +91,22 @@ public class Order {
 		this.deliveryDetail = deliveryDetail;
 	}
 
+	public Boolean getSent() {
+		return sent;
+	}
+
+	public void setSent(Boolean sent) {
+		this.sent = sent;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,6 +119,8 @@ public class Order {
 		result = prime * result + ((orderDate == null) ? 0 : orderDate.hashCode());
 		result = prime * result + orderId;
 		result = prime * result + ((quantityAndName == null) ? 0 : quantityAndName.hashCode());
+		result = prime * result + ((sent == null) ? 0 : sent.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(totalPrice);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -150,6 +170,16 @@ public class Order {
 				return false;
 		} else if (!quantityAndName.equals(other.quantityAndName))
 			return false;
+		if (sent == null) {
+			if (other.sent != null)
+				return false;
+		} else if (!sent.equals(other.sent))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
 		if (Double.doubleToLongBits(totalPrice) != Double.doubleToLongBits(other.totalPrice))
 			return false;
 		return true;
@@ -160,8 +190,10 @@ public class Order {
 		return "Order [orderId=" + orderId + ", totalPrice=" + totalPrice + ", orderDate=" + orderDate + ", delivered="
 				+ delivered + ", quantityAndName=" + quantityAndName + ", clientName=" + clientName + ", clientAddress="
 				+ clientAddress + ", clientPhoneNumber=" + clientPhoneNumber + ", deliveryDetail=" + deliveryDetail
-				+ "]";
+				+ ", sent=" + sent + ", status=" + status + "]";
 	}
 
+	
+	
 	
 }

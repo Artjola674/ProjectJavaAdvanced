@@ -15,23 +15,23 @@
 			<div>
 				<p:growl id="growl"></p:growl>
 				<h:form id="form">
-
-					<p:outputLabel value="Status " for="@next" />
-					<p:selectOneMenu id="status" value="#{deliveryManagedBean.status}">
-						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItem itemLabel="Free" itemValue="Free" />
-						<f:selectItem itemLabel="Busy" itemValue="Busy" />
-						<p:ajax update="status"></p:ajax>
-					</p:selectOneMenu>
-					
+				
 					<p:outputLabel value="Working " for="@next" />
 					<p:selectOneMenu id="working" value="#{deliveryManagedBean.working}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItem itemLabel="Yes" itemValue="true" />
 						<f:selectItem itemLabel="No" itemValue="false" />
 						<p:ajax update="working"></p:ajax>
 					</p:selectOneMenu>
 
-
+					<p:outputLabel value="Status " for="@next" />
+					<p:selectOneMenu id="status" value="#{deliveryManagedBean.status}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItem itemLabel="Free" itemValue="true"/>
+						<f:selectItem itemLabel="Busy" itemValue="false" />
+						<p:ajax update="status"></p:ajax>
+					</p:selectOneMenu>
+				
 					<p:commandButton icon="fa fa-fw fa-search"
 						action="#{deliveryManagedBean.search}" update="dataTable"
 						immediate="true">
@@ -58,7 +58,7 @@
 					</p:column>
 
 					<p:column headerText="Email">
-						<p:outputLabel value="#{delivery.email}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.email}" ></p:outputLabel>
 					</p:column>
 
 					<p:column headerText="Password">

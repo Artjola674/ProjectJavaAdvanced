@@ -20,9 +20,12 @@ public class DeliveryRowMapper implements RowMapper<Delivery>{
 		delivery.setLastName(rs.getString("last_name"));
 		delivery.setPassword(rs.getString("password"));
 		delivery.setPhoneNumber(rs.getString("phone_number"));
-		delivery.setStatus(rs.getString("status"));
 		delivery.setLastUpdate(new Date(rs.getTimestamp("last_update").getTime()));
-		//delivery.setWorking(rs.getBoolean("working"));
+		if(rs.getBoolean("status") == true){
+			delivery.setStatus("Free");
+		}else if(rs.getBoolean("status") == false){
+			delivery.setStatus("Busy");
+		}
 		return delivery;
 	}
 

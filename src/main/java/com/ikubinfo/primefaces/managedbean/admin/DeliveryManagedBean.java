@@ -31,7 +31,7 @@ public class DeliveryManagedBean implements Serializable{
 	
 	private Delivery delivery;
 	private List<Delivery> deliveries;
-	private String status;
+	private Boolean status;
 	private Boolean working;
 	private int orderId;
 	private int show;
@@ -127,15 +127,16 @@ public class DeliveryManagedBean implements Serializable{
 		this.deliveries = deliveries;
 	}
 
-	public String getStatus() {
+	
+	
+
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
-
-	
 
 	public int getOrderId() {
 		return orderId;

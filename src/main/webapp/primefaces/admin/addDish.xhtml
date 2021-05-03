@@ -22,15 +22,15 @@
 						<p:outputLabel for="category" value="Category" />
 						<p:inputText id="category" required="true"
 							value="#{addDishManagedBean.dish.category}"
-							validatorMessage="Category should have only letters.">
-							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+							validatorMessage="Category should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
 						</p:inputText>
 
 						<p:outputLabel for="dishName" value="Name" />
 						<p:inputText id="dishName" required="true"
 							value="#{addDishManagedBean.dish.dishName}"
-							validatorMessage="Dish name should have only letters.">
-							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+							validatorMessage="Dish name should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
 						</p:inputText>
 
 						<p:outputLabel for="price" value="Price" />
@@ -41,7 +41,7 @@
 						</p:inputNumber>
 
 						<p:outputLabel for="description" value="Description" />
-						<p:inputTextarea id="description" required="true"
+						<p:inputTextarea id="description" required="true" 
 							value="#{addDishManagedBean.dish.description}"></p:inputTextarea>
 
 						<p:outputLabel value="Picture" for="picture" />
