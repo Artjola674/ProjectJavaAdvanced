@@ -21,6 +21,4 @@ public class AdminRowMapper implements RowMapper<Admin>{
 		admin.setLastUpdate(new Date(rs.getTimestamp("last_update").getTime()));
 		return admin;
 	}
-	
-
 }

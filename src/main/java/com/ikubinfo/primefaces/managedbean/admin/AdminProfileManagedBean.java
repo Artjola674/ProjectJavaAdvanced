@@ -13,7 +13,7 @@ import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class AdminProfileManagedBean implements Serializable{
+public class AdminProfileManagedBean implements Serializable {
 
 	private static final long serialVersionUID = -3483627202295848834L;
 
@@ -22,7 +22,7 @@ public class AdminProfileManagedBean implements Serializable{
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	@ManagedProperty(value = "#{welcomeManagedBean}")
 	private WelcomeManagedBean welcomeManagedBean;
 
@@ -30,41 +30,41 @@ public class AdminProfileManagedBean implements Serializable{
 	private Admin editAdmin;
 	private String oldPassword;
 	private String newPassword;
-	
+
 	@PostConstruct
 	public void init() {
 		admin = adminService.getAdmin(adminService.getAdminId(welcomeManagedBean.getEmail()));
 	}
-	
+
 	public void save() {
-		if(oldPassword.isEmpty()) {
+		if (oldPassword.isEmpty()) {
 			editAdmin.setPassword(admin.getPassword());
-			if(adminService.save(editAdmin)) {
+			if (adminService.save(editAdmin)) {
 				oldPassword = null;
 				newPassword = null;
 				messages.showInfoMessage("Admin was saved sucessfully");
-			}else {
+			} else {
 				messages.showInfoMessage("Something went wrong");
 			}
-		}else {
-			if(oldPassword.equals(editAdmin.getPassword())) {
+		} else {
+			if (oldPassword.equals(editAdmin.getPassword())) {
 				editAdmin.setPassword(newPassword);
-				if(adminService.save(editAdmin)) {
+				if (adminService.save(editAdmin)) {
 					oldPassword = null;
 					newPassword = null;
 					messages.showInfoMessage("Admin was saved sucessfully");
-				}else {
+				} else {
 					messages.showInfoMessage("Something went wrong");
 				}
-				
-			}else {
+
+			} else {
 				oldPassword = null;
 				messages.showInfoMessage("Password is incorrect");
 			}
 		}
-		
+
 	}
-	
+
 	public AdminService getAdminService() {
 		return adminService;
 	}
@@ -120,6 +120,5 @@ public class AdminProfileManagedBean implements Serializable{
 	public void setWelcomeManagedBean(WelcomeManagedBean welcomeManagedBean) {
 		this.welcomeManagedBean = welcomeManagedBean;
 	}
-	
-	
+
 }

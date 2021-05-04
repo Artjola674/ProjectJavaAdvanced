@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.file.UploadedFile;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
+import com.ikubinfo.primefaces.service.admin.AdminService;
 import com.ikubinfo.primefaces.service.admin.DishService;
 import com.ikubinfo.primefaces.util.Messages;
 
@@ -24,9 +25,12 @@ public class AddDishManagedBean implements Serializable {
 	@ManagedProperty(value = "#{dishService}")
 	private DishService dishService;
 
+	@ManagedProperty(value = "#{adminService}")
+	private AdminService adminService;
+
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	@ManagedProperty(value = "#{welcomeManagedBean}")
 	private WelcomeManagedBean welcomeManagedBean;
 
@@ -38,30 +42,29 @@ public class AddDishManagedBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		dish = new Dish();
-		adminId = dishService.getAdminId(welcomeManagedBean.getEmail());
+		adminId = adminService.getAdminId(welcomeManagedBean.getEmail());
 	}
 
 	public String insertDish() {
-		
+
 		if (file != null) {
-			if(file.getFileName() != null) {
-				
+			if (file.getFileName() != null) {
 				try {
 					String fileName = file.getFileName();
 					List<String> images = dishService.getImages();
-					for(String image:images) {
-						if(fileName.equals(image)) {
+					for (String image : images) {
+						if (fileName.equals(image)) {
 							String randomString = dishService.generateRandomImageName();
 							imageName = randomString.concat(fileName);
 							break;
-						}else {
+						} else {
 							imageName = fileName;
 						}
 					}
 					java.io.InputStream inputStream = file.getInputStream();
 					dishService.savePicture(inputStream, imageName);
-					
-					if (dishService.insertDish(dish, adminId,imageName)) {
+
+					if (dishService.insertDish(dish, adminId, imageName)) {
 						messages.showInfoMessage("Dish was added successfully");
 						dish = new Dish();
 						return "dish.xhtml?show=1faces-redirect=true";
@@ -71,16 +74,16 @@ public class AddDishManagedBean implements Serializable {
 					}
 				} catch (IOException e) {
 					messages.showInfoMessage("Something went wrong");
-					
+
 				}
-			}else {
+			} else {
 				messages.showInfoMessage("File should not be empty");
 			}
-		}	
-		
+		}
+
 		return "addDish.xhtml";
 	}
-	
+
 	public DishService getDishService() {
 		return dishService;
 	}
@@ -137,5 +140,12 @@ public class AddDishManagedBean implements Serializable {
 		this.welcomeManagedBean = welcomeManagedBean;
 	}
 
-	
+	public AdminService getAdminService() {
+		return adminService;
+	}
+
+	public void setAdminService(AdminService adminService) {
+		this.adminService = adminService;
+	}
+
 }

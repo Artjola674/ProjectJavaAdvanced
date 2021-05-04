@@ -12,10 +12,10 @@
 
 		<ui:define name="content">
 
-			<div class="table">
+			<div>
 
 				<p:growl id="growl"></p:growl>
-				<h:form id="form">
+				<h:form>
 
 					<p:outputLabel for="startDate" value=" From: " />
 					<p:calendar id="startDate" showOn="button"
@@ -32,18 +32,19 @@
 					</p:calendar>
 
 					<p:commandButton icon="fa fa-fw fa-search"
-						action="#{showAllOrdersManagedBean.search()}" update="dataTable total"
-						immediate="true">
+						action="#{showAllOrdersManagedBean.search()}"
+						update="dataTable total" immediate="true">
 					</p:commandButton>
 
 				</h:form>
 				<p:dataTable id="dataTable"
 					value="#{showAllOrdersManagedBean.orders}" var="order"
 					paginator="true" rows="3" styleClass="p-mt-2" allowUnsorting="true"
-					sortMode="single">
+					sortMode="single" sortBy="#{order.orderDate}"
+					sortOrder="descending">
 
 					<p:column headerText="Order Id">
-						<p:outputLabel value="#{order.orderId}"></p:outputLabel>
+						<p:outputLabel value="#{order.orderId}" />
 					</p:column>
 
 					<p:column headerText="Order Date">
@@ -53,45 +54,46 @@
 					</p:column>
 
 					<p:column headerText="Price">
-						<p:outputLabel value="#{order.totalPrice} $"></p:outputLabel>
+						<p:outputLabel value="#{order.totalPrice} $" />
 					</p:column>
 
 					<p:column headerText="Client">
-						<p:outputLabel value="#{order.clientName}"></p:outputLabel>
+						<p:outputLabel value="#{order.clientName}" />
 					</p:column>
 
 					<p:column headerText="Address">
-						<p:outputLabel value="#{order.clientAddress}"></p:outputLabel>
+						<p:outputLabel value="#{order.clientAddress}" />
 					</p:column>
 
 					<p:column headerText="Phone Number">
-						<p:outputLabel value="#{order.clientPhoneNumber}"></p:outputLabel>
-					</p:column>
-
-
-					<p:column headerText="Details">
-						<p:inputTextarea value="#{order.quantityAndName}"></p:inputTextarea>
-					</p:column>
-					
-					<p:column headerText="Delivery" visible="#{showAllOrdersManagedBean.showDeliveryColumn}">
-						<p:inputTextarea value="#{order.deliveryDetail}"></p:inputTextarea>
-					</p:column>
-
-					<p:column id="sent" headerText="Send"
-						visible="#{showAllOrdersManagedBean.showSend}">
-						<p:button value="Send" outcome="delivery.xhtml?id=#{order.orderId}">
-						<f:param name="show" value="1"></f:param>
-						</p:button>
+						<p:outputLabel value="#{order.clientPhoneNumber}" />
 					</p:column>
 					
 					<p:column id="status" headerText="Status"
 						visible="#{showAllOrdersManagedBean.showStatus}">
-						<p:outputLabel value="#{order.status}"></p:outputLabel>
+						<p:outputLabel value="#{order.status}" />
+					</p:column>
+
+					<p:column headerText="Details">
+						<p:inputTextarea value="#{order.quantityAndName}" />
+					</p:column>
+
+					<p:column headerText="Delivery"
+						visible="#{showAllOrdersManagedBean.showDeliveryColumn}">
+						<p:inputTextarea value="#{order.deliveryDetail}" />
+					</p:column>
+
+					<p:column id="sent" headerText="Send"
+						visible="#{showAllOrdersManagedBean.showSend}">
+						<p:button value="Send"
+							outcome="delivery.xhtml?id=#{order.orderId}">
+							<f:param name="show" value="1"></f:param>
+						</p:button>
 					</p:column>
 
 				</p:dataTable>
 
-				
+
 				<h:form id="total">
 					<p:panelGrid styleClass="panelgrid-dotted-border"
 						rendered="#{showAllOrdersManagedBean.showTotal}">
@@ -114,8 +116,6 @@
 					</p:panelGrid>
 
 				</h:form>
-
-
 
 			</div>
 

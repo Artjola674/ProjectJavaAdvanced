@@ -85,7 +85,7 @@
 						<p:commandButton value="Free" styleClass="ui-button-success"
 							action="#{deliveryProfileManagedBean.addStatusToFree}"
 							immediate="true"
-							rendered="#{!deliveryProfileManagedBean.delivery.status}"
+							rendered="#{!deliveryProfileManagedBean.delivery.booleanStatus}"
 							update="profile @this">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
@@ -99,7 +99,7 @@
 
 
 						<p:commandButton value="Busy"
-							rendered="#{deliveryProfileManagedBean.delivery.status}"
+							rendered="#{deliveryProfileManagedBean.delivery.booleanStatus}"
 							styleClass="ui-button-danger"
 							action="#{deliveryProfileManagedBean.addStatusToBusy}"
 							immediate="true" update="profile @this">
@@ -125,4 +125,3 @@
 	</ui:composition>
 </h:body>
 </html>
-

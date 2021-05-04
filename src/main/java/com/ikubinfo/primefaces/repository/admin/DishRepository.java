@@ -37,7 +37,6 @@ public class DishRepository {
 			"where dish.deleted = 'false'";
 	private static final String UPDATE_DISH = "update dish set  category = :category, dish_name = :dishName, "
 			+ "description = :description, price = :price, picture = :picture where dish_id = :id";
-	private static final String GET_ADMIN_ID = "select admin_id from admin where email = ? ";
 	public static final String GET_CATEGORY = "select distinct category from dish where deleted = 'false' ";
 	public static final String GET_DISH_NAME = "select distinct dish_name from dish where deleted = 'false' ";
 	private static final String AVAILABILITY_UPDATE = "update dish set availability = :availability where dish_id = :dishId";
@@ -54,9 +53,6 @@ public class DishRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public int getAdminId(String email) {
-		return jdbcTemplate.queryForObject(GET_ADMIN_ID, Integer.class, email);
-	}
 
 	public boolean insertDish(Dish dish, int adminId,String picture) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
