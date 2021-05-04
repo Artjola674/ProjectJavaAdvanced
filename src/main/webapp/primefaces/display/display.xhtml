@@ -14,7 +14,7 @@
 
 				<h:outputLabel for="kategoria" value="Zgjidh kategorine:"></h:outputLabel>
 				 <p:selectOneMenu id="kategoria" value="#{displaymanagedbean.category}" label="Select one">
-				<f:selectItems value="#{countryManagedBean.categories}" />
+				<f:selectItems value="#{displaymanagedbean.categories}" />
 				</p:selectOneMenu>
 				
 				<p:splitButton id="basic" value="Search" action="#{displaymanagedbean.getAll}" update="table">
