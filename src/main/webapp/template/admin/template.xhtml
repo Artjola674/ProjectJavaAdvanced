@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<h:outputStylesheet library="css" name="css/style.css" />
@@ -15,7 +16,7 @@
 	<f:facet name="last">
 		<h:outputStylesheet name="css/style.css" />
 	</f:facet>
-	
+
 	<div class="menu">
 		<ui:insert name="header">
 
@@ -24,8 +25,7 @@
 	</div>
 	<br />
 
-	<div
-		style="border-width: 2px; border-color: black; border-style: solid;">
+	<div class="body">
 		<ui:insert name="content">
 
 
@@ -33,11 +33,15 @@
 	</div>
 	<br />
 
-	<div style="border-width: 2px; border-color: red; border-style: solid;">
-		<ui:insert name="footer">
-			<ui:include src="footer.xhtml" />
-		</ui:insert>
-	</div>
+	<div class="footer">
 
+		<ui:insert name="footer">
+
+			<ui:include src="footer.xhtml" />
+
+		</ui:insert>
+
+
+	</div>
 </h:body>
 </html>

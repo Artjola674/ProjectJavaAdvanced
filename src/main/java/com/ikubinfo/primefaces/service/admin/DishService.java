@@ -21,19 +21,20 @@ public class DishService {
 	}
 
 
-	public boolean insertDish(Dish dish, int adminId) {
-		return dishRepository.insertDish(dish,adminId);
+	public boolean insertDish(Dish dish, int adminId,String picture) {
+		return dishRepository.insertDish(dish,adminId,picture);
 	}
 	
-	public void save(InputStream inputStream,String fileName) throws IOException {
+	public void savePicture(InputStream inputStream,String fileName) throws IOException {
 		File directory = new File("C:\\Users\\kanac\\git\\ProjectJavaAdvanced\\src\\main\\webapp\\resources\\image");
 		File file = new File(directory,fileName);
-		dishRepository.save(inputStream, file);
+		dishRepository.savePicture(inputStream, file);
 	}
+	
 	public int getAdminId(String email) {
 		return dishRepository.getAdminId(email);
 	}
-	
+
 	public List<String> getCategories(Boolean availability) {
 		return dishRepository.getCategories(availability);
 	}
@@ -57,10 +58,15 @@ public class DishService {
 	}
 
 
-	public boolean save(Dish dish) {
-		return dishRepository.save(dish);
+	public boolean save(Dish dish,String picture) {
+		return dishRepository.save(dish,picture);
 	}
-
-
-
+	
+	public List<String> getImages() {
+		return dishRepository.getImages();
+	}
+		
+	public String generateRandomImageName() {
+		return dishRepository.generateRandomImageName();
+	}
 }

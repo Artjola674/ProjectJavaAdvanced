@@ -6,59 +6,57 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/template.xhtml">
-
+	<ui:composition template="/template/admin/template.xhtml">
 
 		<ui:define name="content">
-			<div>
+			<div align="center">
 
 				<p:growl id="growl" showDetail="true" />
 				<h:form enctype="multipart/form-data">
+					<br />
+					<br />
+					<br />
+					<br />
 					<h2>Add a new dish</h2>
-					<p:outputLabel for="category" value="Category"></p:outputLabel>
-					<p:inputText id="category" required="true"
-						value="#{addDishManagedBean.dish.category}"></p:inputText>
-					<br></br>
-					<br></br>
+					<h:panelGrid columns="2">
+						<p:outputLabel for="category" value="Category" />
+						<p:inputText id="category" required="true"
+							value="#{addDishManagedBean.dish.category}"
+							validatorMessage="Category should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+						</p:inputText>
 
-					<p:outputLabel for="dishName" value="Name"></p:outputLabel>
-					<p:inputText id="dishName" required="true"
-						value="#{addDishManagedBean.dish.dishName}"></p:inputText>
-					<br></br>
-					<br></br>
+						<p:outputLabel for="dishName" value="Name" />
+						<p:inputText id="dishName" required="true"
+							value="#{addDishManagedBean.dish.dishName}"
+							validatorMessage="Dish name should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+						</p:inputText>
 
-					<p:outputLabel for="description" value="Description"></p:outputLabel>
-					<p:inputText id="description" required="true"
-						value="#{addDishManagedBean.dish.description}"></p:inputText>
-					<br></br>
-					<br></br>
+						<p:outputLabel for="price" value="Price" />
+						<p:inputNumber id="price" required="true"
+							value="#{addDishManagedBean.dish.price}" symbol=" $"
+							symbolPosition="s" decimalSeparator="." minValue="0"
+							maxValue="100" decimalPlaces="2">
+						</p:inputNumber>
 
-					<p:outputLabel for="price" value="Price"></p:outputLabel>
-					<p:inputText id="price" required="true"
-						value="#{addDishManagedBean.dish.price}">
-						<f:convertNumber minFractionDigits="2" />
-					</p:inputText>
-					<br></br>
-					<br></br>
+						<p:outputLabel for="description" value="Description" />
+						<p:inputTextarea id="description" required="true" 
+							value="#{addDishManagedBean.dish.description}"></p:inputTextarea>
 
-					<p:outputLabel value="Picture" for="inseratForm"></p:outputLabel>
-					<h:form id="inseratForm" enctype="multipart/form-data">
-						<p:fileUpload value="#{addDishManagedBean.file}" mode="simple"
-							skinSimple="true" />
+						<p:outputLabel value="Picture" for="picture" />
+						<p:fileUpload id="picture" value="#{addDishManagedBean.file}"
+							mode="simple" skinSimple="true" />
 
-						<p:commandButton value="Submit" ajax="false"
-							action ="#{addDishManagedBean.handleFileUpload()}" />
-					</h:form>
-					
-					<br></br>
-					<br></br>
+						<div align="center">
+							<p:commandButton value="Save" style="align: center"
+								action="#{addDishManagedBean.insertDish}" update="growl @this"
+								icon="pi pi-save">
+							</p:commandButton>
+						</div>
 
-					<p:commandButton value="Save"
-						action="#{addDishManagedBean.insertDish}" update="growl @this"
-						icon="pi pi-save">
-					</p:commandButton>
+					</h:panelGrid>
 				</h:form>
-
 			</div>
 
 		</ui:define>

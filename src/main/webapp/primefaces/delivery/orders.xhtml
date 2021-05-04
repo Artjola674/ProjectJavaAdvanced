@@ -7,7 +7,7 @@
 
 </h:head>
 <h:body>
-	<ui:composition template="/template/admin/template.xhtml">
+	<ui:composition template="/template/delivery/template.xhtml">
 
 
 		<ui:define name="content">
@@ -19,26 +19,26 @@
 
 					<p:outputLabel for="startDate" value=" From: " />
 					<p:calendar id="startDate" showOn="button"
-						value="#{showAllOrdersManagedBean.startDate}" locale="en"
+						value="#{ordersManagedBean.startDate}" locale="en"
 						pattern="dd.MM.yyyy HH:mm">
 						<p:ajax update="startDate" />
 					</p:calendar>
 
 					<p:outputLabel for="endDate" value=" To: " />
 					<p:calendar id="endDate" showOn="button"
-						value="#{showAllOrdersManagedBean.endDate}" locale="en"
+						value="#{ordersManagedBean.endDate}" locale="en"
 						pattern="dd.MM.yyyy HH:mm">
 						<p:ajax update="startDate" />
 					</p:calendar>
 
 					<p:commandButton icon="fa fa-fw fa-search"
-						action="#{showAllOrdersManagedBean.search()}" update="dataTable total"
+						action="#{ordersManagedBean.search()}" update="dataTable"
 						immediate="true">
 					</p:commandButton>
 
 				</h:form>
 				<p:dataTable id="dataTable"
-					value="#{showAllOrdersManagedBean.orders}" var="order"
+					value="#{ordersManagedBean.orders}" var="order"
 					paginator="true" rows="3" styleClass="p-mt-2" allowUnsorting="true"
 					sortMode="single">
 
@@ -72,50 +72,44 @@
 					<p:column headerText="Details">
 						<p:inputTextarea value="#{order.quantityAndName}"></p:inputTextarea>
 					</p:column>
-					
-					<p:column headerText="Delivery" visible="#{showAllOrdersManagedBean.showDeliveryColumn}">
-						<p:inputTextarea value="#{order.deliveryDetail}"></p:inputTextarea>
+
+					<p:column headerText="Delivered"
+						visible="#{ordersManagedBean.showDeliveredColumn}">
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
+							action="#{ordersManagedBean.deliver}" immediate="true"
+							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
+							<f:setPropertyActionListener target="#{ordersManagedBean.orderId}"
+								value="#{order.orderId}" />
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
-					<p:column id="sent" headerText="Send"
-						visible="#{showAllOrdersManagedBean.showSend}">
-						<p:button value="Send" outcome="delivery.xhtml?id=#{order.orderId}">
-						<f:param name="show" value="1"></f:param>
-						</p:button>
-					</p:column>
-					
-					<p:column id="status" headerText="Status"
-						visible="#{showAllOrdersManagedBean.showStatus}">
-						<p:outputLabel value="#{order.status}"></p:outputLabel>
+					<p:column headerText="Returned"
+						visible="#{ordersManagedBean.showReturnedColumn}">
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-danger"  
+							action="#{ordersManagedBean.returned}" immediate="true"
+							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
+							<f:setPropertyActionListener target="#{ordersManagedBean.orderId}"
+								value="#{order.orderId}" />
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
 				</p:dataTable>
-
-				
-				<h:form id="total">
-					<p:panelGrid styleClass="panelgrid-dotted-border"
-						rendered="#{showAllOrdersManagedBean.showTotal}">
-						<f:facet name="header">
-							<p:row>
-								<p:column colspan="2">
-									<h:outputText value="Total Revenue" />
-								</p:column>
-							</p:row>
-						</f:facet>
-						<p:row>
-							<p:column style="width: 100px;">
-								<p:outputLabel value="Total" style="font-weight: bold;" />
-							</p:column>
-
-							<p:column style="width: 100px;">
-								<p:outputLabel value="#{showAllOrdersManagedBean.total}" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-
-				</h:form>
-
-
 
 			</div>
 

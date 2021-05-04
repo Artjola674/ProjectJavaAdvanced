@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.ikubinfo.primefaces.model.admin.Order;
 import com.ikubinfo.primefaces.service.admin.OrderService;
@@ -15,86 +16,227 @@ import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class ShowAllOrdersManagedBean implements Serializable{
+public class ShowAllOrdersManagedBean implements Serializable {
 
 	private static final long serialVersionUID = -146883774165759901L;
 
 	@ManagedProperty(value = "#{orderService}")
 	private OrderService orderService;
-	
+
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	private List<Order> orders;
+	private int show;
 	private int orderId;
 	private Date startDate;
 	private Date endDate;
+	private boolean showTotal;
+	private boolean showSend;
+	private boolean showDeliveryColumn;
+	private boolean showStatus;
+	private Boolean deliver;
+	private double total;
+	private Boolean sent;
+	private Boolean returned;
 	
+
 	@PostConstruct
 	public void init() {
-		orders = orderService.getAllOrders(null,startDate,endDate);
-	}
-	
-	public void deliver() {
-		if (orderService.deliver(orderId)) {
-			orders = orderService.getAllOrders(null,startDate,endDate);
-			messages.showInfoMessage("Order was delivered successfully");
+		String showString =FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show");
+		show = Integer.parseInt(showString);
+		if(show == 1){
+			showSend = false;
+			showDeliveryColumn = true;
+			deliver = null;
+			showTotal = false;
+			sent = true;
+			returned = true;
+			showStatus = false;
+			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
+		}else if(show == 2){
+			showDeliveryColumn = false;
+			returned = false;
+			showSend = true;
+			deliver = false;
+			showTotal = false;
+			sent = false;
+			showStatus = false;
+			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
+		}else if(show== 3){
+			showDeliveryColumn = true;
+			showSend = false;
+			showTotal = true;
+			deliver = true;
+			sent = true;
+			returned = false;
+			showStatus = false;
+			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
+			total = orderService.getTotalPrice(startDate, endDate);
+		}else if(show== 4){
+			showDeliveryColumn = true;
+			showSend = false;
+			showTotal = false;
+			deliver = null;
+			sent = null;
+			returned = null;
+			showStatus = true;
+			orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
 		}
+	}
 
-	}
-	
 	public void search() {
-		orders = orderService.getAllOrders(null,startDate,endDate);
+		orders = orderService.getAllOrders(deliver, startDate, endDate,sent,returned);
+		total = orderService.getTotalPrice(startDate, endDate);
 	}
-	
+
+
 	public OrderService getOrderService() {
 		return orderService;
 	}
+
 
 	public void setOrderService(OrderService orderService) {
 		this.orderService = orderService;
 	}
 
+
 	public Messages getMessages() {
 		return messages;
 	}
+
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
 	}
 
+
 	public List<Order> getOrders() {
 		return orders;
 	}
+
 
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 
+
+	public int getShow() {
+		return show;
+	}
+
+
+	public void setShow(int show) {
+		this.show = show;
+	}
+
+
 	public int getOrderId() {
 		return orderId;
 	}
+
 
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 
+
 	public Date getStartDate() {
 		return startDate;
 	}
+
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
+
 	public Date getEndDate() {
 		return endDate;
 	}
+
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
+
+	public boolean isShowTotal() {
+		return showTotal;
+	}
+
+
+	public void setShowTotal(boolean showTotal) {
+		this.showTotal = showTotal;
+	}
+
+
+	public boolean isShowSend() {
+		return showSend;
+	}
+
+
+	public void setShowSend(boolean showSend) {
+		this.showSend = showSend;
+	}
+
+
+	public Boolean getDeliver() {
+		return deliver;
+	}
+
+
+	public void setDeliver(Boolean deliver) {
+		this.deliver = deliver;
+	}
+
+
+	public double getTotal() {
+		return total;
+	}
+
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+
+	public Boolean getSent() {
+		return sent;
+	}
+
+
+	public void setSent(Boolean sent) {
+		this.sent = sent;
+	}
+
+
+	public Boolean getReturned() {
+		return returned;
+	}
+
+
+	public void setReturned(Boolean returned) {
+		this.returned = returned;
+	}
+
+	public boolean isShowDeliveryColumn() {
+		return showDeliveryColumn;
+	}
+
+	public void setShowDeliveryColumn(boolean showDeliveryColumn) {
+		this.showDeliveryColumn = showDeliveryColumn;
+	}
+
+	public boolean isShowStatus() {
+		return showStatus;
+	}
+
+	public void setShowStatus(boolean showStatus) {
+		this.showStatus = showStatus;
+	}
+
 	
 	
+
 }

@@ -6,20 +6,24 @@
 <h:head>
 </h:head>
 <h:body>
-	<ui:composition template="/template/template.xhtml">
+	<ui:composition template="/template/admin/template.xhtml">
+
+
 
 		<ui:define name="content">
 
-			<div class="datatable">
+			<div>
 				<p:growl id="growl"></p:growl>
 				<h:form id="form">
 
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
 						filter="true" filterMatchMode="startsWith">
-						<p:ajax listener="#{dishManagedBean.getDishNames()}" update="dishName"/>
+						<p:ajax listener="#{dishManagedBean.getDishNames()}"
+							update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{dishManagedBean.categories}" />
+						<f:selectItems id="categories"
+							value="#{dishManagedBean.categories}" />
 
 					</p:selectOneMenu>
 
@@ -28,18 +32,18 @@
 						filter="true" filterMatchMode="startsWith">
 						<p:ajax update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItems value="#{dishManagedBean.names}" />
+						<f:selectItems id="dishNames" value="#{dishManagedBean.names}" />
 
 					</p:selectOneMenu>
 
-					<p:commandButton label="Search" value="Search"
+					<p:commandButton icon="fa fa-fw fa-search"
 						action="#{dishManagedBean.search}" update="dataTable"
 						immediate="true">
 					</p:commandButton>
 
 				</h:form>
 				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
-					var="dish" paginator="true" rows="10" styleClass="p-mt-2"
+					var="dish" paginator="true" rows="4" styleClass="p-mt-2"
 					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
 					sortOrder="ascending">
 
@@ -57,7 +61,7 @@
 					</p:column>
 
 					<p:column headerText="Description">
-						<p:outputLabel value="#{dish.description}"></p:outputLabel>
+						<p:outputLabel value="#{dish.description}" ></p:outputLabel>
 					</p:column>
 
 					<p:column headerText="Price">
@@ -68,8 +72,8 @@
 						<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Picture">				
-						<img src="/image/#{dish.picture}" width="110" height="110"/>
+					<p:column headerText="Picture">
+						<img src="/image/#{dish.picture}" width="110" height="110" />
 					</p:column>
 
 					<p:column headerText="Last Update">
@@ -78,29 +82,48 @@
 						</p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Disable">
-						<p:commandButton value="Disable" disabled="#{!dish.availability}"
+					<p:column headerText="Disable"
+						visible="#{dishManagedBean.showDisableColumn}">
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-warning"
+							disabled="#{!dish.availability}"
 							action="#{dishManagedBean.disable}" immediate="true"
 							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
 								value="#{dish}" />
 						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
-					<p:column headerText="Enable">
-						<p:commandButton value="Enable" disabled="#{dish.availability}"
+					<p:column headerText="Enable"
+						visible="#{dishManagedBean.showEnableColumn}">
+						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
+							disabled="#{dish.availability}"
 							action="#{dishManagedBean.enable}" immediate="true"
 							update="dataTable">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
 								value="#{dish}" />
 						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						</p:confirmDialog>
 					</p:column>
 
-					<p:column headerText="Delete">
-						<p:commandButton value="Delete" immediate="true"
-							action="#{dishManagedBean.delete}"
-							update="dataTable
-							 growl">
+					<p:column headerText="Delete"
+						visible="#{dishManagedBean.showDeleteColumn}">
+						<p:commandButton icon="fa fa-fw fa-remove" immediate="true" styleClass="ui-button-danger"
+							action="#{dishManagedBean.delete}" update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -116,8 +139,9 @@
 						</p:confirmDialog>
 					</p:column>
 
-					<p:column headerText="Edit">
-						<p:commandButton value="Edit" update="updateDialog"
+					<p:column headerText="Edit"
+						visible="#{dishManagedBean.showEditColumn}">
+						<p:commandButton icon="fa fa-fw fa-edit" update="updateDialog"
 							process="@this" oncomplete="PF('EditDialog').show();">
 
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -130,35 +154,43 @@
 
 				<p:dialog header="Edit Dish" id="updateDialog"
 					widgetVar="EditDialog" modal="true">
-					<h:form id="dialogForm">
+					<h:form id="dialogForm" enctype="multipart/form-data">
 
 						<h:panelGrid columns="2">
 							<p:outputLabel for="category" value="Category"></p:outputLabel>
 							<p:inputText id="category" required="true"
-								value="#{dishManagedBean.dish.category}"></p:inputText>
+								value="#{dishManagedBean.dish.category}"
+								validatorMessage="Category should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+							</p:inputText>
 
 							<p:outputLabel for="dishName" value="Name"></p:outputLabel>
 							<p:inputText id="dishName" required="true"
-								value="#{dishManagedBean.dish.dishName}"></p:inputText>
-
-							<p:outputLabel for="description" value="Description"></p:outputLabel>
-							<p:inputText id="description" required="true"
-								value="#{dishManagedBean.dish.description}"></p:inputText>
+								value="#{dishManagedBean.dish.dishName}"
+								validatorMessage="Dish name should have only letters and spaces.">
+							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+							</p:inputText>
 
 							<p:outputLabel for="price" value="Price"></p:outputLabel>
-							<p:inputText id="price" required="true"
-								value="#{dishManagedBean.dish.price}">
-								<f:convertNumber minFractionDigits="2" />
-							</p:inputText>
+							<p:inputNumber id="price" required="true"
+								value="#{dishManagedBean.dish.price}" symbol=" $"
+								symbolPosition="s" decimalSeparator="." minValue="0"
+								maxValue="100" decimalPlaces="2">
+							</p:inputNumber>
 
-							<p:outputLabel value="Picture" for="picture">
-							</p:outputLabel>
-							<p:inputText id="picture" required="true"
-								value="#{dishManagedBean.dish.picture}">
-							</p:inputText>
-							
-							<p:commandButton process="updateDialog" update="dataTable growl"
-								value="Save" actionListener="#{dishManagedBean.save()}"
+							<p:outputLabel for="description" value="Description"></p:outputLabel>
+							<p:inputTextarea id="description" required="true"
+								value="#{dishManagedBean.dish.description}"></p:inputTextarea>
+
+
+							<p:outputLabel value="Picture" for="picture"></p:outputLabel>
+							<p:fileUpload id="picture" value="#{dishManagedBean.file}"
+								mode="simple" skinSimple="true" />
+
+							<p:commandButton process="updateDialog"
+								update="dataTable growl form:category form:dishName"
+								icon="pi pi-save" value="Save"
+								actionListener="#{dishManagedBean.save()}"
 								oncomplete="PF('EditDialog').hide();">
 							</p:commandButton>
 
@@ -174,4 +206,5 @@
 	</ui:composition>
 </h:body>
 </html>
+
 

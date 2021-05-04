@@ -21,6 +21,16 @@ public class OrderRowMapper implements RowMapper<Order>{
 		order.setClientAddress(rs.getString("address"));
 		order.setClientName((rs.getString("first_name").concat(" ")).concat(rs.getString("last_name")));
 		order.setClientPhoneNumber(rs.getString("phone_number"));
+		order.setSent(rs.getBoolean("sent"));
+		if(rs.getBoolean("returned") == true) {
+			order.setStatus("Returned");
+		}else if(rs.getBoolean("delivered") == true) {
+			order.setStatus("Delivered");
+		}else if(rs.getBoolean("sent") == true) {
+			order.setStatus("Sent");
+		}else {
+			order.setStatus("Unsent");
+		}
 		return order;
 	}
 

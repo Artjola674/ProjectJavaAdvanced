@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/admin/template.xhtml">
+
+
+
+		<ui:define name="content">
+
+			<div align="center">
+				<p:growl id="growl"></p:growl>
+				<h:form id="addDelivery">
+					<br />
+					<br />
+					<br />
+					<br />
+					<h2>Add a new delivery</h2>
+					<h:panelGrid columns="2">
+						<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
+						<p:inputText id="firstName" required="true"
+							value="#{addDeliveryManagedBean.delivery.firstName}"
+							validatorMessage="First name should have only letters.">
+							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+						</p:inputText>
+
+						<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
+						<p:inputText id="lastName" required="true"
+							value="#{addDeliveryManagedBean.delivery.lastName}"
+							validatorMessage="Last name should have only letters.">
+							<f:validateRegex pattern="[a-zA-Z]{2,30}" />
+						</p:inputText>
+
+						<p:outputLabel for="email" value="Email"></p:outputLabel>
+						<p:inputText id="email" required="true"
+							value="#{addDeliveryManagedBean.delivery.email}"
+							validatorMessage="Email is not valid.">
+							<f:validateRegex
+								pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+						</p:inputText>
+
+						<p:outputLabel for="password" value="Password"></p:outputLabel>
+						<p:inputText id="password" required="true"
+							value="#{addDeliveryManagedBean.delivery.password}"
+							validatorMessage="Password should have at least 8 characters and at most 32 characters. it should ontain a digit, a lower case alphabet, an upper case alphabet and a special character">
+							<f:validateRegex
+								pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+.=])(?=\S+$).{8,32}$" />
+						</p:inputText>
+
+						<p:outputLabel for="phoneNumber" value="Phone Number"></p:outputLabel>
+						<p:inputText id="phoneNumber" required="true"
+							value="#{addDeliveryManagedBean.delivery.phoneNumber}"
+							validatorMessage="Phone number is not valid.">
+							<f:validateRegex pattern="^(((067|068|069)\d{7})){1}$" />
+						</p:inputText>
+
+
+						<br />
+						<br />
+						<p:commandButton update="growl @this" icon="pi pi-save"
+							value="Save" action="#{addDeliveryManagedBean.insert}"></p:commandButton>
+
+
+
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
+
+

@@ -2,6 +2,7 @@ package com.ikubinfo.primefaces.managedbean.admin;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,43 +26,61 @@ public class AddDishManagedBean implements Serializable {
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
+	
+	@ManagedProperty(value = "#{welcomeManagedBean}")
+	private WelcomeManagedBean welcomeManagedBean;
 
 	private Dish dish;
 	private int adminId;
 	private UploadedFile file;
+	private String imageName;
 
 	@PostConstruct
 	public void init() {
-		this.dish = new Dish();
-		adminId = dishService.getAdminId("artjola.kotorri@gmail.com");
+		dish = new Dish();
+		adminId = dishService.getAdminId(welcomeManagedBean.getEmail());
 	}
 
 	public String insertDish() {
-		if (dishService.insertDish(dish, adminId)) {
-			messages.showInfoMessage("Dish was added successfully");
-			dish = new Dish();
-			return "dish.xhtml";
-		} else {
-			messages.showInfoMessage("Something went wrong");
-			return "addDish.xhtml";
-		}
-	}
-
-	public void handleFileUpload() {
+		
 		if (file != null) {
-			try {
-				String fileName = file.getFileName();
-				this.dish.setPicture(fileName);
-				java.io.InputStream inputStream = file.getInputStream();
-				dishService.save(inputStream, fileName);
-				messages.showInfoMessage("File was uploaded successfully");
-			} catch (IOException e) {
-				messages.showInfoMessage("Something went wrong");
+			if(file.getFileName() != null) {
+				
+				try {
+					String fileName = file.getFileName();
+					List<String> images = dishService.getImages();
+					for(String image:images) {
+						if(fileName.equals(image)) {
+							String randomString = dishService.generateRandomImageName();
+							imageName = randomString.concat(fileName);
+							break;
+						}else {
+							imageName = fileName;
+						}
+					}
+					java.io.InputStream inputStream = file.getInputStream();
+					dishService.savePicture(inputStream, imageName);
+					
+					if (dishService.insertDish(dish, adminId,imageName)) {
+						messages.showInfoMessage("Dish was added successfully");
+						dish = new Dish();
+						return "dish.xhtml?show=1faces-redirect=true";
+					} else {
+						messages.showInfoMessage("Something went wrong");
+						return "addDish.xhtml";
+					}
+				} catch (IOException e) {
+					messages.showInfoMessage("Something went wrong");
+					
+				}
+			}else {
+				messages.showInfoMessage("File should not be empty");
 			}
-
-		}
+		}	
+		
+		return "addDish.xhtml";
 	}
-
+	
 	public DishService getDishService() {
 		return dishService;
 	}
@@ -102,4 +121,21 @@ public class AddDishManagedBean implements Serializable {
 		this.file = file;
 	}
 
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public WelcomeManagedBean getWelcomeManagedBean() {
+		return welcomeManagedBean;
+	}
+
+	public void setWelcomeManagedBean(WelcomeManagedBean welcomeManagedBean) {
+		this.welcomeManagedBean = welcomeManagedBean;
+	}
+
+	
 }

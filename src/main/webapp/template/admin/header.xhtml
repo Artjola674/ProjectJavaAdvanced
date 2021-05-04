@@ -1,0 +1,76 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<body>
+	<ui:composition>
+		<h:form>
+			<p:megaMenu id="menu" orientation="horizontal" autoDisplay="false">
+				<p:submenu label="Order" icon="fa fa-fw fa-shopping-cart">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View returned orders"
+								action="allOrders.xhtml?show=1faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
+							<p:menuitem value="View unsend orders"
+								action="allOrders.xhtml?show=2faces-redirect=true"
+								immediate="true" />
+							<p:menuitem value="View delivered orders"
+								action="allOrders.xhtml?show=3faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
+							<p:menuitem value="View all orders"
+								action="allOrders.xhtml?show=4faces-redirect=true"
+								immediate="true">
+							</p:menuitem>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Dish" icon="fa fa-fw fa-cutlery">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Add a new dish" action="addDish.xhtml" />
+							<p:menuitem value="View all dishes"
+								action="dish.xhtml?show=1faces-redirect=true" immediate="true" />
+							<p:menuitem value="View only available dishes"
+								action="dish.xhtml?show=2faces-redirect=true" immediate="true" />
+							<p:menuitem value="View only not available dishes"
+								action="dish.xhtml?show=3faces-redirect=true" immediate="true" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Deliveries" icon="fa fa-fw fa-users">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Add a new delivery" action="addDelivery.xhtml" immediate="true"/>
+							<p:menuitem value="View all deliveries" action="delivery.xhtml?show=2faces-redirect=true" immediate="true"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="User" icon="fa fa-user">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="View profile" action="viewProfile.xhtml" />
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:submenu label="Log out" icon="fa fa-fw fa-sign-out" style="float: right;">
+					<p:column>
+						<p:submenu label="">
+							<p:menuitem value="Log out" action="#{welcomeManagedBean.logout}" immediate="true"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+			</p:megaMenu>
+			<p:sticky target="menu"/>
+		</h:form>
+	</ui:composition>
+</body>
+</html>
