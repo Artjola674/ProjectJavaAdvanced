@@ -8,13 +8,11 @@
 <h:body>
 	<ui:composition template="/template/admin/template.xhtml">
 
-
-
 		<ui:define name="content">
 
 			<div>
 				<p:growl id="growl"></p:growl>
-				<h:form id="form">
+				<h:form>
 
 					<p:outputLabel value="Category " for="category" />
 					<p:selectOneMenu id="category" value="#{dishManagedBean.category}"
@@ -24,7 +22,6 @@
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems id="categories"
 							value="#{dishManagedBean.categories}" />
-
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Dish Name " for="dishName" />
@@ -33,43 +30,42 @@
 						<p:ajax update="dishName" />
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItems id="dishNames" value="#{dishManagedBean.names}" />
-
 					</p:selectOneMenu>
 
 					<p:commandButton icon="fa fa-fw fa-search"
 						action="#{dishManagedBean.search}" update="dataTable"
 						immediate="true">
 					</p:commandButton>
-
 				</h:form>
+
 				<p:dataTable id="dataTable" value="#{dishManagedBean.dishes}"
 					var="dish" paginator="true" rows="4" styleClass="p-mt-2"
 					allowUnsorting="true" sortMode="single" sortBy="#{dish.lastUpdate}"
-					sortOrder="ascending">
+					sortOrder="descending">
 
 					<p:column headerText="Dish Id">
-						<p:outputLabel value="#{dish.dishId}"></p:outputLabel>
+						<p:outputLabel value="#{dish.dishId}" />
 					</p:column>
 
 					<p:column headerText="Category">
-						<p:outputLabel value="#{dish.category}"></p:outputLabel>
+						<p:outputLabel value="#{dish.category}" />
 					</p:column>
 
 
 					<p:column headerText="Dish Name">
-						<p:outputLabel value="#{dish.dishName}"></p:outputLabel>
+						<p:outputLabel value="#{dish.dishName}" />
 					</p:column>
 
 					<p:column headerText="Description">
-						<p:outputLabel value="#{dish.description}" ></p:outputLabel>
+						<p:outputLabel value="#{dish.description}" />
 					</p:column>
 
 					<p:column headerText="Price">
-						<p:outputLabel value="#{dish.price} $"></p:outputLabel>
+						<p:outputLabel value="#{dish.price} $" />
 					</p:column>
 
 					<p:column headerText="Created By">
-						<p:outputLabel value="#{dish.adminName}"></p:outputLabel>
+						<p:outputLabel value="#{dish.adminName}" />
 					</p:column>
 
 					<p:column headerText="Picture">
@@ -84,10 +80,10 @@
 
 					<p:column headerText="Disable"
 						visible="#{dishManagedBean.showDisableColumn}">
-						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-warning"
-							disabled="#{!dish.availability}"
+						<p:commandButton icon="fa fa-fw fa-check"
+							styleClass="ui-button-warning" disabled="#{!dish.availability}"
 							action="#{dishManagedBean.disable}" immediate="true"
-							update="dataTable">
+							update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -103,10 +99,10 @@
 
 					<p:column headerText="Enable"
 						visible="#{dishManagedBean.showEnableColumn}">
-						<p:commandButton icon="fa fa-fw fa-check" styleClass="ui-button-success"
-							disabled="#{dish.availability}"
+						<p:commandButton icon="fa fa-fw fa-check"
+							styleClass="ui-button-success" disabled="#{dish.availability}"
 							action="#{dishManagedBean.enable}" immediate="true"
-							update="dataTable">
+							update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -122,8 +118,9 @@
 
 					<p:column headerText="Delete"
 						visible="#{dishManagedBean.showDeleteColumn}">
-						<p:commandButton icon="fa fa-fw fa-remove" immediate="true" styleClass="ui-button-danger"
-							action="#{dishManagedBean.delete}" update="dataTable growl">
+						<p:commandButton icon="fa fa-fw fa-remove" immediate="true"
+							styleClass="ui-button-danger" action="#{dishManagedBean.delete}"
+							update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
 								icon="pi pi-exclamation-triangle" />
 							<f:setPropertyActionListener target="#{dishManagedBean.dish}"
@@ -157,38 +154,37 @@
 					<h:form id="dialogForm" enctype="multipart/form-data">
 
 						<h:panelGrid columns="2">
-							<p:outputLabel for="category" value="Category"></p:outputLabel>
+							<p:outputLabel for="category" value="Category" />
 							<p:inputText id="category" required="true"
 								value="#{dishManagedBean.dish.category}"
 								validatorMessage="Category should have only letters and spaces.">
-							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+								<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
 							</p:inputText>
 
-							<p:outputLabel for="dishName" value="Name"></p:outputLabel>
+							<p:outputLabel for="dishName" value="Name" />
 							<p:inputText id="dishName" required="true"
 								value="#{dishManagedBean.dish.dishName}"
 								validatorMessage="Dish name should have only letters and spaces.">
-							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
+								<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
 							</p:inputText>
 
-							<p:outputLabel for="price" value="Price"></p:outputLabel>
+							<p:outputLabel for="price" value="Price" />
 							<p:inputNumber id="price" required="true"
 								value="#{dishManagedBean.dish.price}" symbol=" $"
 								symbolPosition="s" decimalSeparator="." minValue="0"
 								maxValue="100" decimalPlaces="2">
 							</p:inputNumber>
 
-							<p:outputLabel for="description" value="Description"></p:outputLabel>
+							<p:outputLabel for="description" value="Description" />
 							<p:inputTextarea id="description" required="true"
 								value="#{dishManagedBean.dish.description}"></p:inputTextarea>
 
 
-							<p:outputLabel value="Picture" for="picture"></p:outputLabel>
+							<p:outputLabel value="Picture" for="picture" />
 							<p:fileUpload id="picture" value="#{dishManagedBean.file}"
 								mode="simple" skinSimple="true" />
 
-							<p:commandButton process="updateDialog"
-								update="dataTable growl form:category form:dishName"
+							<p:commandButton process="updateDialog" update="dataTable growl"
 								icon="pi pi-save" value="Save"
 								actionListener="#{dishManagedBean.save()}"
 								oncomplete="PF('EditDialog').hide();">
@@ -198,7 +194,6 @@
 					</h:form>
 
 				</p:dialog>
-
 
 			</div>
 

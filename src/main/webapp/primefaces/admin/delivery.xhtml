@@ -8,16 +8,15 @@
 <h:body>
 	<ui:composition template="/template/admin/template.xhtml">
 
-
-
 		<ui:define name="content">
 
 			<div>
 				<p:growl id="growl"></p:growl>
-				<h:form id="form">
-				
+				<h:form>
+
 					<p:outputLabel value="Working " for="@next" />
-					<p:selectOneMenu id="working" value="#{deliveryManagedBean.working}">
+					<p:selectOneMenu id="working"
+						value="#{deliveryManagedBean.working}">
 						<f:selectItem itemLabel="Select One" itemValue="" />
 						<f:selectItem itemLabel="Yes" itemValue="true" />
 						<f:selectItem itemLabel="No" itemValue="false" />
@@ -27,50 +26,51 @@
 					<p:outputLabel value="Status " for="@next" />
 					<p:selectOneMenu id="status" value="#{deliveryManagedBean.status}">
 						<f:selectItem itemLabel="Select One" itemValue="" />
-						<f:selectItem itemLabel="Free" itemValue="true"/>
+						<f:selectItem itemLabel="Free" itemValue="true" />
 						<f:selectItem itemLabel="Busy" itemValue="false" />
 						<p:ajax update="status"></p:ajax>
 					</p:selectOneMenu>
-				
+
 					<p:commandButton icon="fa fa-fw fa-search"
 						action="#{deliveryManagedBean.search}" update="dataTable"
 						immediate="true">
 					</p:commandButton>
 
 				</h:form>
+
 				<p:dataTable id="dataTable"
 					value="#{deliveryManagedBean.deliveries}" var="delivery"
 					paginator="true" rows="4" styleClass="p-mt-2" allowUnsorting="true"
 					sortMode="single" sortBy="#{delivery.lastUpdate}"
-					sortOrder="ascending">
+					sortOrder="descending">
 
 					<p:column headerText="Delivery Id">
-						<p:outputLabel value="#{delivery.deliveryId}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.deliveryId}" />
 					</p:column>
 
 					<p:column headerText="First Name">
-						<p:outputLabel value="#{delivery.firstName}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.firstName}" />
 					</p:column>
 
 
 					<p:column headerText="Last Name">
-						<p:outputLabel value="#{delivery.lastName}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.lastName}" />
 					</p:column>
 
-					<p:column headerText="Email">
-						<p:outputLabel value="#{delivery.email}" ></p:outputLabel>
+					<p:column headerText="Email" style="width: 200px;">
+						<p:outputLabel value="#{delivery.email}" />
 					</p:column>
 
 					<p:column headerText="Password">
-						<p:outputLabel value="#{delivery.password}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.password}" />
 					</p:column>
 
 					<p:column headerText="Phone Number">
-						<p:outputLabel value="#{delivery.phoneNumber}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.phoneNumber}" />
 					</p:column>
 
 					<p:column headerText="Status">
-						<p:outputLabel value="#{delivery.status}"></p:outputLabel>
+						<p:outputLabel value="#{delivery.status}" />
 					</p:column>
 
 					<p:column headerText="Last Update">
@@ -79,7 +79,8 @@
 						</p:outputLabel>
 					</p:column>
 
-					<p:column headerText="Choose a delivery" visible="#{deliveryManagedBean.showChooseColumn}">
+					<p:column headerText="Choose a delivery"
+						visible="#{deliveryManagedBean.showChooseColumn}">
 						<p:commandButton value="choose" immediate="true"
 							action="#{deliveryManagedBean.send}" update="dataTable growl">
 							<p:confirm header="Confirmation" message="Are you sure?"
@@ -94,7 +95,9 @@
 								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
 						</p:confirmDialog>
 					</p:column>
-					<p:column headerText="Delete" visible="#{deliveryManagedBean.showDeleteColumn}">
+
+					<p:column headerText="Delete"
+						visible="#{deliveryManagedBean.showDeleteColumn}">
 						<p:commandButton icon="fa fa-fw fa-remove" immediate="true"
 							styleClass="ui-button-danger"
 							action="#{deliveryManagedBean.delete}" update="dataTable growl">
@@ -103,8 +106,6 @@
 							<f:setPropertyActionListener
 								target="#{deliveryManagedBean.delivery}" value="#{delivery}" />
 						</p:commandButton>
-
-
 						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 							<p:commandButton value="Yes" type="button"
 								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
@@ -113,13 +114,12 @@
 						</p:confirmDialog>
 					</p:column>
 
-					<p:column headerText="Edit" visible="#{deliveryManagedBean.showEditColumn}">
+					<p:column headerText="Edit"
+						visible="#{deliveryManagedBean.showEditColumn}">
 						<p:commandButton icon="fa fa-fw fa-edit" update="updateDialog"
 							process="@this" oncomplete="PF('EditDialog').show();">
-
 							<f:setPropertyActionListener
 								target="#{deliveryManagedBean.delivery}" value="#{delivery}" />
-
 						</p:commandButton>
 					</p:column>
 
@@ -130,21 +130,21 @@
 					<h:form id="dialogForm" enctype="multipart/form-data">
 
 						<h:panelGrid columns="2">
-							<p:outputLabel for="firstName" value="First Name"></p:outputLabel>
+							<p:outputLabel for="firstName" value="First Name" />
 							<p:inputText id="firstName" required="true"
 								value="#{deliveryManagedBean.delivery.firstName}"
 								validatorMessage="First name should have only letters.">
 								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 							</p:inputText>
 
-							<p:outputLabel for="lastName" value="Last Name"></p:outputLabel>
+							<p:outputLabel for="lastName" value="Last Name" />
 							<p:inputText id="lastName" required="true"
 								value="#{deliveryManagedBean.delivery.lastName}"
 								validatorMessage="Last name should have only letters.">
 								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 							</p:inputText>
 
-							<p:outputLabel for="email" value="Email"></p:outputLabel>
+							<p:outputLabel for="email" value="Email" />
 							<p:inputText id="email" required="true"
 								value="#{deliveryManagedBean.delivery.email}"
 								validatorMessage="Email is not valid.">
@@ -152,15 +152,15 @@
 									pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 							</p:inputText>
 
-							<p:outputLabel for="password" value="Password"></p:outputLabel>
+							<p:outputLabel for="password" value="Password" />
 							<p:inputText id="password" required="true"
 								value="#{deliveryManagedBean.delivery.password}"
-								validatorMessage="Password should have at least 8 characters and at most 32 characters. it should ontain a digit, a lower case alphabet, an upper case alphabet and a special character">
+								validatorMessage="Password should have at least 8 characters and at most 32 characters. It should ontain a digit, a lower case alphabet, an upper case alphabet and a special character">
 								<f:validateRegex
 									pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+.=])(?=\S+$).{8,32}$" />
 							</p:inputText>
 
-							<p:outputLabel for="phoneNumber" value="Phone Number"></p:outputLabel>
+							<p:outputLabel for="phoneNumber" value="Phone Number" />
 							<p:inputText id="phoneNumber" required="true"
 								value="#{deliveryManagedBean.delivery.phoneNumber}"
 								validatorMessage="Phone number is not valid.">
@@ -176,7 +176,6 @@
 					</h:form>
 
 				</p:dialog>
-
 
 			</div>
 

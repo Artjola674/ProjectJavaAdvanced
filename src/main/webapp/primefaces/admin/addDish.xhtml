@@ -9,8 +9,8 @@
 	<ui:composition template="/template/admin/template.xhtml">
 
 		<ui:define name="content">
-			<div align="center">
 
+			<div align="center">
 				<p:growl id="growl" showDetail="true" />
 				<h:form enctype="multipart/form-data">
 					<br />
@@ -41,7 +41,7 @@
 						</p:inputNumber>
 
 						<p:outputLabel for="description" value="Description" />
-						<p:inputTextarea id="description" required="true" 
+						<p:inputTextarea id="description" required="true"
 							value="#{addDishManagedBean.dish.description}"></p:inputTextarea>
 
 						<p:outputLabel value="Picture" for="picture" />
@@ -50,7 +50,7 @@
 
 						<div align="center">
 							<p:commandButton value="Save" style="align: center"
-								action="#{addDishManagedBean.insertDish}" update="growl @this"
+								action="#{addDishManagedBean.insertDish}" update="growl"
 								icon="pi pi-save">
 							</p:commandButton>
 						</div>

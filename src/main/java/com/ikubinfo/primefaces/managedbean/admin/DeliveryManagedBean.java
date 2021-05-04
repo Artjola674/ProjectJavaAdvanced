@@ -9,26 +9,26 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import com.ikubinfo.primefaces.model.admin.Delivery;
-import com.ikubinfo.primefaces.service.admin.DeliveryService;
+import com.ikubinfo.primefaces.model.delivery.Delivery;
 import com.ikubinfo.primefaces.service.admin.OrderService;
+import com.ikubinfo.primefaces.service.delivery.DeliveryService;
 import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean
 @ViewScoped
-public class DeliveryManagedBean implements Serializable{
-	
+public class DeliveryManagedBean implements Serializable {
+
 	private static final long serialVersionUID = -9100934033459030204L;
 
 	@ManagedProperty(value = "#{deliveryService}")
 	private DeliveryService deliveryService;
-	
+
 	@ManagedProperty(value = "#{orderService}")
 	private OrderService orderService;
-	
+
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
+
 	private Delivery delivery;
 	private List<Delivery> deliveries;
 	private Boolean status;
@@ -38,59 +38,57 @@ public class DeliveryManagedBean implements Serializable{
 	private boolean showChooseColumn;
 	private boolean showDeleteColumn;
 	private boolean showEditColumn;
-	
+
 	@PostConstruct
 	public void init() {
-		
-		String showString =FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show");
+
+		String showString = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("show");
 		show = Integer.parseInt(showString);
 		delivery = new Delivery();
-		deliveries = deliveryService.getAllDeliveries(status,working);
-		if(show == 2) {
+		deliveries = deliveryService.getAllDeliveries(status, working);
+		if (show == 2) {
 			showChooseColumn = false;
 			showDeleteColumn = true;
 			showEditColumn = true;
-		}else {
-			String idString =FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
+		} else {
+			String idString = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 			orderId = Integer.parseInt(idString);
 			showChooseColumn = true;
 			showDeleteColumn = false;
 			showEditColumn = false;
 		}
 	}
-	
+
 	public void search() {
-		deliveries = deliveryService.getAllDeliveries(status,working);
-		System.out.println(status);
-		System.out.println(working);
+		deliveries = deliveryService.getAllDeliveries(status, working);
 	}
-	
+
 	public void delete() {
 		if (deliveryService.delete(delivery.getDeliveryId())) {
-			deliveries = deliveryService.getAllDeliveries(status,working);
+			deliveries = deliveryService.getAllDeliveries(status, working);
 			messages.showInfoMessage("Deleted");
 
 		} else {
 			messages.showInfoMessage("Something went wrong");
 		}
 	}
-	
+
 	public String send() {
-		if(orderService.sendOrderToDelivery(delivery,orderId)) {
+		if (orderService.sendOrderToDelivery(delivery, orderId)) {
 			messages.showInfoMessage("Order was sent successfully to delivery");
 			delivery = new Delivery();
 			return "allOrders.xhtml?show=2faces-redirect=true";
-		}else {
+		} else {
 			messages.showInfoMessage("Something went wrong");
 			return "delivery.xhtml?show=1faces-redirect=true";
 		}
 	}
-	
+
 	public void save() {
-		if(deliveryService.save(delivery)) {
+		if (deliveryService.save(delivery)) {
 			messages.showInfoMessage("Delivery was updated successfully");
 			delivery = new Delivery();
-		}else {
+		} else {
 			messages.showInfoMessage("Something went wrong");
 		}
 	}
@@ -126,9 +124,6 @@ public class DeliveryManagedBean implements Serializable{
 	public void setDeliveries(List<Delivery> deliveries) {
 		this.deliveries = deliveries;
 	}
-
-	
-	
 
 	public Boolean getStatus() {
 		return status;
@@ -193,7 +188,5 @@ public class DeliveryManagedBean implements Serializable{
 	public void setWorking(Boolean working) {
 		this.working = working;
 	}
-	
-	
-	
+
 }

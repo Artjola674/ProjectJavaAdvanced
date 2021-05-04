@@ -8,8 +8,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import com.ikubinfo.primefaces.managedbean.admin.WelcomeManagedBean;
-import com.ikubinfo.primefaces.model.admin.Delivery;
-import com.ikubinfo.primefaces.service.admin.DeliveryService;
+import com.ikubinfo.primefaces.model.delivery.Delivery;
+import com.ikubinfo.primefaces.service.delivery.DeliveryService;
 import com.ikubinfo.primefaces.util.Messages;
 
 @ManagedBean

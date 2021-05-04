@@ -12,43 +12,37 @@ import com.ikubinfo.primefaces.repository.admin.DishRepository;
 
 @Service
 public class DishService {
-	
-	private DishRepository dishRepository;	
+
+	private DishRepository dishRepository;
 
 	public DishService(DishRepository dishRepository) {
 		super();
 		this.dishRepository = dishRepository;
 	}
 
+	public boolean insertDish(Dish dish, int adminId, String picture) {
+		return dishRepository.insertDish(dish, adminId, picture);
+	}
 
-	public boolean insertDish(Dish dish, int adminId,String picture) {
-		return dishRepository.insertDish(dish,adminId,picture);
-	}
-	
-	public void savePicture(InputStream inputStream,String fileName) throws IOException {
+	public void savePicture(InputStream inputStream, String fileName) throws IOException {
 		File directory = new File("C:\\Users\\kanac\\git\\ProjectJavaAdvanced\\src\\main\\webapp\\resources\\image");
-		File file = new File(directory,fileName);
+		File file = new File(directory, fileName);
 		dishRepository.savePicture(inputStream, file);
-	}
-	
-	public int getAdminId(String email) {
-		return dishRepository.getAdminId(email);
 	}
 
 	public List<String> getCategories(Boolean availability) {
 		return dishRepository.getCategories(availability);
 	}
-	
-	public List<String> getDishNames(String category, Boolean availability) {
-		
-		return dishRepository.getDishNames(category,availability);
-	}
 
+	public List<String> getDishNames(String category, Boolean availability) {
+
+		return dishRepository.getDishNames(category, availability);
+	}
 
 	public List<Dish> getAllDishes(String category, String dishName, Boolean availability) {
 		return dishRepository.getAllDishes(category, dishName, availability);
 	}
-	
+
 	public void availability(int dishId, boolean availability) {
 		dishRepository.availability(dishId, availability);
 	}
@@ -57,15 +51,14 @@ public class DishService {
 		return dishRepository.delete(dishId);
 	}
 
-
-	public boolean save(Dish dish,String picture) {
-		return dishRepository.save(dish,picture);
+	public boolean save(Dish dish, String picture) {
+		return dishRepository.save(dish, picture);
 	}
-	
+
 	public List<String> getImages() {
 		return dishRepository.getImages();
 	}
-		
+
 	public String generateRandomImageName() {
 		return dishRepository.generateRandomImageName();
 	}

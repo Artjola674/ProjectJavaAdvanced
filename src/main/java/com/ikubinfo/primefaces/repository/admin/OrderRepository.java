@@ -17,8 +17,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.ikubinfo.primefaces.model.admin.Delivery;
 import com.ikubinfo.primefaces.model.admin.Order;
+import com.ikubinfo.primefaces.model.delivery.Delivery;
 import com.ikubinfo.primefaces.repository.mapper.admin.OrderRowMapper;
 
 @Repository
@@ -35,14 +35,14 @@ public class OrderRepository {
 			+ "delivery.phone_number from delivery inner join order_table on delivery.delivery_id = order_table.delivery_id where order_table.order_id = ? ";
 	private static final String DELIVER_ORDER = "update order_table set delivered = true where order_id = :orderId";
 	private static final String RETURNED_ORDER = "update order_table set returned = true where order_id = :orderId";
-	private static final String GET_TOTAL_PRICE = "select sum(total_price) as total from order_table \r\n" + 
-			"where delivered = true and order_date >= ? and order_date <= ? ";
+	private static final String GET_TOTAL_PRICE = "select sum(total_price) as total from order_table \r\n"
+			+ "where delivered = true and order_date >= ? and order_date <= ? ";
 	public static final String SEND_ORDER_TO_DELIVERY = "update order_table set delivery_id = :deliveryId where order_id = :orderId ";
 	public static final String UPDATE_SEND = "update order_table set sent = true where order_id = :orderId ";
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
 	public OrderRepository(DataSource dataSource) {
 		super();
@@ -50,7 +50,7 @@ public class OrderRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<Order> getAllOrders(Boolean delivered, Date startDate, Date endDate,Boolean sent,Boolean returned) {
+	public List<Order> getAllOrders(Boolean delivered, Date startDate, Date endDate, Boolean sent, Boolean returned) {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("delivered", delivered);
@@ -76,14 +76,13 @@ public class OrderRepository {
 		if (!Objects.isNull(returned)) {
 			queryString = queryString.concat(" and returned = :returned ");
 		}
-		
 
 		return namedParameterJdbcTemplate.query(queryString, params, new OrderRowMapper());
 
 	}
-	
-	
-	public List<Order> getAllOrdersOfADelivery(Boolean delivered, Date startDate, Date endDate,Boolean returned,int deliveryId) {
+
+	public List<Order> getAllOrdersOfADelivery(Boolean delivered, Date startDate, Date endDate, Boolean returned,
+			int deliveryId) {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put("delivered", delivered);
@@ -113,7 +112,7 @@ public class OrderRepository {
 		return namedParameterJdbcTemplate.query(queryString, params, new OrderRowMapper());
 
 	}
-	
+
 	public void getOrderQuantity(Order order) {
 		List<String> toReturn = new ArrayList<>();
 		Map<String, Object> parameter = new HashMap<>();
@@ -139,8 +138,9 @@ public class OrderRepository {
 	}
 
 	public double getTotalPrice(Date startDate, Date endDate) {
-		return jdbcTemplate.queryForObject(GET_TOTAL_PRICE, new Object[] {startDate, endDate}, (rs, rownum) -> {        
-			return rs.getDouble("total"); }); 
+		return jdbcTemplate.queryForObject(GET_TOTAL_PRICE, new Object[] { startDate, endDate }, (rs, rownum) -> {
+			return rs.getDouble("total");
+		});
 	}
 
 	public boolean returned(int orderId) {
@@ -150,7 +150,7 @@ public class OrderRepository {
 		int updatedCount = this.namedParameterJdbcTemplate.update(RETURNED_ORDER, namedParameters);
 		return updatedCount > 0;
 	}
-	
+
 	public boolean sendOrderToDelivery(Delivery delivery, int orderId) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("deliveryId", delivery.getDeliveryId());
@@ -167,14 +167,15 @@ public class OrderRepository {
 		int updatedCount = this.namedParameterJdbcTemplate.update(UPDATE_SEND, params);
 		return updatedCount > 0;
 	}
-	
+
 	public void getOrderDelivery(Order order) {
-		String toReturn = jdbcTemplate.queryForObject(GET_ORDER_DELIVERY, new Object[] {order.getOrderId()}, (rs, rownum) -> {
-			return ((((rs.getString("first_name").concat(" ")).concat(rs.getString("last_name"))).concat("\n")).concat(rs.getString("phone_number")));
-		});
-		
+		String toReturn = jdbcTemplate.queryForObject(GET_ORDER_DELIVERY, new Object[] { order.getOrderId() },
+				(rs, rownum) -> {
+					return ((((rs.getString("first_name").concat(" ")).concat(rs.getString("last_name"))).concat("\n"))
+							.concat(rs.getString("phone_number")));
+				});
+
 		order.setDeliveryDetail(toReturn);
 	}
-
 
 }
