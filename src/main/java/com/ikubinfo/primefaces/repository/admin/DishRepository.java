@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.repository.mapper.admin.DishRowMapper;
+import com.ikubinfo.primefaces.service.admin.request.DishListRequest;
 
 @Repository
 public class DishRepository {
@@ -42,6 +43,7 @@ public class DishRepository {
 	private static final String AVAILABILITY_UPDATE = "update dish set availability = :availability where dish_id = :dishId";
 	private static final String DELETE_DISH = "update dish set deleted = 'true' where dish_id = :dishId";
 	public static final String GET_IMAGES = "select distinct picture from dish where deleted = 'false' ";
+	private static final String COUNT_DISHES = "Select count(dish_id) from dish where deleted = 'false' ";
 	
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
@@ -165,4 +167,71 @@ public class DishRepository {
 		   return generatedString;
 	}
 	
+	public int getDishCount(DishListRequest request) {
+
+		LOG.info("Counting dishes for request {}", request);
+
+		Map<String, Object> params = new HashMap<>();
+		if (!Objects.isNull(request.getCategory())) {
+			params.put("category", "%" + request.getCategory().toLowerCase() + "%");
+		}
+		if (!Objects.isNull(request.getDishName())) {
+			params.put("dishName", "%" + request.getDishName().toLowerCase() + "%");
+		}
+		if (!Objects.isNull(request.getAvailability())) {
+			params.put("availability", request.getAvailability());
+		}
+		
+		String queryString = COUNT_DISHES;
+
+		if (!Objects.isNull(request.getCategory()) && !request.getCategory().isEmpty()) {
+			queryString = queryString.concat(" and  lower(category) like  :category ");
+		}
+		if (!Objects.isNull(request.getDishName()) && !request.getDishName().isEmpty()) {
+			queryString = queryString.concat(" and  lower(dish_name) like  :dishName ");
+		}
+		if (!Objects.isNull(request.getAvailability())) {
+			queryString = queryString.concat(" and availability = :availability ");
+		}
+		
+		LOG.info("SQL ->  {} ", queryString);
+		return namedParameterJdbcTemplate.queryForObject(queryString, params, Integer.class);
+	}
+
+	public List<Dish> getDishList(DishListRequest request) {
+		LOG.info("Filtering dishes for request {}", request);
+		
+		Map<String, Object> params = new HashMap<>();
+		if (!Objects.isNull(request.getCategory())) {
+			params.put("category", "%" + request.getCategory().toLowerCase() + "%");
+		}
+		if (!Objects.isNull(request.getDishName())) {
+			params.put("dishName", "%" + request.getDishName().toLowerCase() + "%");
+		}
+		if (!Objects.isNull(request.getAvailability())) {
+			params.put("availability", request.getAvailability());
+		}
+		
+		params.put("row_count", request.getPageSize());
+		params.put("row_to_skip", request.getFirst());
+
+		String queryString = GET_ALL_DISHES;
+
+		if (!Objects.isNull(request.getCategory()) && !request.getCategory().isEmpty()) {
+			queryString = queryString.concat(" and  lower(category) like  :category ");
+		}
+		if (!Objects.isNull(request.getDishName()) && !request.getDishName().isEmpty()) {
+			queryString = queryString.concat(" and  lower(dish_name) like  :dishName ");
+		}
+		if (!Objects.isNull(request.getAvailability())) {
+			queryString = queryString.concat(" and availability = :availability ");
+		}
+
+		queryString = queryString.concat(" LIMIT :row_count OFFSET :row_to_skip");
+
+		LOG.info("SQL ->  {} ", queryString);
+		return namedParameterJdbcTemplate.query(queryString, params, new DishRowMapper());
+	}
+
 }
+	

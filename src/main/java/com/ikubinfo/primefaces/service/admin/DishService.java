@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.repository.admin.DishRepository;
+import com.ikubinfo.primefaces.service.admin.request.DishListRequest;
+import com.ikubinfo.primefaces.service.admin.response.DishListResponse;
 
 @Service
 public class DishService {
@@ -61,5 +63,12 @@ public class DishService {
 
 	public String generateRandomImageName() {
 		return dishRepository.generateRandomImageName();
+	}
+	
+	public DishListResponse getDishes(DishListRequest request) {
+		int totalCount = dishRepository.getDishCount(request);
+		List<Dish> dishes = dishRepository.getDishList(request);
+
+		return new DishListResponse(totalCount, dishes);
 	}
 }
