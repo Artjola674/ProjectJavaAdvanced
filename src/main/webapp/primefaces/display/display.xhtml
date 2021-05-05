@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/template/template.xhtml">
+		<ui:define name="content">
+			<p:growl id="growl"></p:growl>
+			<h:form id="form">
+
+
+				<h:outputLabel for="category" value="Chose category:"></h:outputLabel>
+				 <p:selectOneMenu id="category" value="#{displayManagedBean.category}" label="Select one">
+				<f:selectItems id="categories" value="#{displayManagedBean.categories}" />
+				</p:selectOneMenu>
+				
+				<p:splitButton id="basic" value="Search" action="#{displayManagedBean.getAll}" update="table">
+				</p:splitButton>
+            </h:form>
+            
+			<p:dataTable id="table" value="#{displayManagedBean.dishes}"
+					var="dish" sortBy="#{dish.dish_name}">
+
+				<p:column headerText="Dish name">
+					<p:outputLabel value="#{dish.dish_name}"></p:outputLabel>
+				</p:column>
+				
+				<p:column headerText="Category">
+					<p:outputLabel value="#{dish.category}"></p:outputLabel>
+				</p:column>
+					<p:column headerText="Price">
+					<p:outputLabel value="#{dish.price}"></p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Chose an activity:">
+					<p:commandButton value="Order"></p:commandButton>
+						</p:column>				
+			</p:dataTable>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
