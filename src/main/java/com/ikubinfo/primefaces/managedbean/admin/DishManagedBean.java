@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.model.file.UploadedFile;
 
-import com.ikubinfo.primefaces.managedbean.admin.lazy.DishLazyDataModel;
 import com.ikubinfo.primefaces.model.admin.Dish;
 import com.ikubinfo.primefaces.service.admin.DishService;
 import com.ikubinfo.primefaces.util.Messages;
@@ -28,9 +27,6 @@ public class DishManagedBean implements Serializable {
 
 	@ManagedProperty(value = "#{messages}")
 	private Messages messages;
-	
-	@ManagedProperty(value = "#{dishLazyDataModel}")
-	private DishLazyDataModel dishDataModel;
 
 	private List<Dish> dishes;
 	private int show;
@@ -126,7 +122,6 @@ public class DishManagedBean implements Serializable {
 		if (dishService.save(dish,picture)) {
 			dishes = dishService.getAllDishes(category, dishName, availability);
 			messages.showInfoMessage("Dish updated successfully");
-
 		}
 		dish = new Dish();
 
@@ -283,14 +278,5 @@ public class DishManagedBean implements Serializable {
 		this.show = show;
 	}
 
-	public DishLazyDataModel getDishDataModel() {
-		return dishDataModel;
-	}
-
-	public void setDishDataModel(DishLazyDataModel dishDataModel) {
-		this.dishDataModel = dishDataModel;
-	}
-	
-	
 
 }
