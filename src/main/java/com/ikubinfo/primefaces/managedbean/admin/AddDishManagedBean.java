@@ -45,6 +45,11 @@ public class AddDishManagedBean implements Serializable {
 		adminId = adminService.getAdminId(welcomeManagedBean.getEmail());
 	}
 
+	public List<String> getSuggestions() {
+
+		return dishService.getCategories(null);
+	}
+
 	public String insertDish() {
 
 		if (file != null) {

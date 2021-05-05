@@ -77,46 +77,47 @@
 							</p:column>
 						</p:row>
 
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Status" style="font-weight: bold;" />
+							</p:column>
 
+							<p:column>
+								<p:commandButton value="Free" styleClass="ui-button-success"
+									action="#{deliveryProfileManagedBean.addStatusToFree}"
+									immediate="true"
+									rendered="#{!deliveryProfileManagedBean.delivery.booleanStatus}"
+									update="profile">
+									<p:confirm header="Confirmation" message="Are you sure?"
+										icon="pi pi-exclamation-triangle" />
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+								</p:confirmDialog>
+
+								<p:commandButton value="Busy"
+									rendered="#{deliveryProfileManagedBean.delivery.booleanStatus}"
+									styleClass="ui-button-danger"
+									action="#{deliveryProfileManagedBean.addStatusToBusy}"
+									immediate="true" update="profile">
+									<p:confirm header="Confirmation" message="Are you sure?"
+										icon="pi pi-exclamation-triangle" />
+								</p:commandButton>
+								<p:confirmDialog global="true" showEffect="fade"
+									hideEffect="fade">
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+								</p:confirmDialog>
+							</p:column>
+						</p:row>
 					</p:panelGrid>
 
-					<div align="center">
-
-						<p:commandButton value="Free" styleClass="ui-button-success"
-							action="#{deliveryProfileManagedBean.addStatusToFree}"
-							immediate="true"
-							rendered="#{!deliveryProfileManagedBean.delivery.booleanStatus}"
-							update="profile @this">
-							<p:confirm header="Confirmation" message="Are you sure?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-							<p:commandButton value="Yes" type="button"
-								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-							<p:commandButton value="No" type="button"
-								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-						</p:confirmDialog>
-
-
-						<p:commandButton value="Busy"
-							rendered="#{deliveryProfileManagedBean.delivery.booleanStatus}"
-							styleClass="ui-button-danger"
-							action="#{deliveryProfileManagedBean.addStatusToBusy}"
-							immediate="true" update="profile @this">
-							<p:confirm header="Confirmation" message="Are you sure?"
-								icon="pi pi-exclamation-triangle" />
-						</p:commandButton>
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-							<p:commandButton value="Yes" type="button"
-								styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-							<p:commandButton value="No" type="button"
-								styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-						</p:confirmDialog>
-
-					</div>
-
-					<br />
-					<br />
 				</h:form>
 
 			</div>

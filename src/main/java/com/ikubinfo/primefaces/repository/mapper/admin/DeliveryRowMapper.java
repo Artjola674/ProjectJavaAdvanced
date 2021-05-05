@@ -1,4 +1,4 @@
-package com.ikubinfo.primefaces.repository.mapper.delivery;
+package com.ikubinfo.primefaces.repository.mapper.admin;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,8 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.ikubinfo.primefaces.model.delivery.Delivery;
+import com.ikubinfo.primefaces.model.admin.Delivery;
+
 
 public class DeliveryRowMapper implements RowMapper<Delivery>{
 
@@ -20,13 +21,10 @@ public class DeliveryRowMapper implements RowMapper<Delivery>{
 		delivery.setPassword(rs.getString("password"));
 		delivery.setPhoneNumber(rs.getString("phone_number"));
 		delivery.setLastUpdate(new Date(rs.getTimestamp("last_update").getTime()));
-		delivery.setBooleanStatus(rs.getBoolean("status"));
-		if(rs.getBoolean("status") == true && rs.getBoolean("working") == true){
+		if(rs.getBoolean("status") == true){
 			delivery.setStatus("Free");
-		}else if(rs.getBoolean("status") == false && rs.getBoolean("working") == true){
+		}else if(rs.getBoolean("status") == false){
 			delivery.setStatus("Busy");
-		}else {
-			delivery.setStatus("Unavailable");
 		}
 		return delivery;
 	}

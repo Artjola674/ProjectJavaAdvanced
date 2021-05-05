@@ -20,11 +20,13 @@
 					<h2>Add a new dish</h2>
 					<h:panelGrid columns="2">
 						<p:outputLabel for="category" value="Category" />
-						<p:inputText id="category" required="true"
-							value="#{addDishManagedBean.dish.category}"
+						<p:autoComplete id="category"
+							value="#{addDishManagedBean.dish.category}" required="true"
+							completeMethod="#{addDishManagedBean.getSuggestions()}"
+							scrollHeight="250"
 							validatorMessage="Category should have only letters and spaces.">
 							<f:validateRegex pattern="^[a-zA-Z][a-zA-Z ]+$" />
-						</p:inputText>
+						</p:autoComplete>
 
 						<p:outputLabel for="dishName" value="Name" />
 						<p:inputText id="dishName" required="true"

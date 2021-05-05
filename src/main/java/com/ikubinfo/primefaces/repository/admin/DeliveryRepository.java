@@ -1,4 +1,4 @@
-package com.ikubinfo.primefaces.repository.delivery;
+package com.ikubinfo.primefaces.repository.admin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,16 +15,16 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.ikubinfo.primefaces.model.delivery.Delivery;
-import com.ikubinfo.primefaces.repository.mapper.delivery.DeliveryRowMapper;
+import com.ikubinfo.primefaces.model.admin.Delivery;
+import com.ikubinfo.primefaces.repository.mapper.admin.DeliveryRowMapper;
 
 @Repository
 public class DeliveryRepository {
 
 	Logger LOG = LoggerFactory.getLogger(DeliveryRepository.class);
 
-	private static final String GET_DELIVERY_BY_EMAIL = "select delivery_id, first_name, last_name, email, password, status,working, phone_number,last_update from delivery where deleted = false and lower(email) like lower(?) ";
-	private static final String GET_ALL_DELIVERIES = "select delivery_id, first_name, last_name, email, password, status,working, phone_number, last_update from delivery where deleted = false ";
+	private static final String GET_DELIVERY_BY_EMAIL = "select delivery_id, first_name, last_name, email, password, status, phone_number,last_update from delivery where deleted = false and lower(email) like lower(?) ";
+	private static final String GET_ALL_DELIVERIES = "select delivery_id, first_name, last_name, email, password, status, phone_number, last_update from delivery where deleted = false ";
 	private static final String UPDATE_DELIVERY = "update delivery set first_name = :firstName, last_name = :lastName, password = :password, email = :email, "
 			+ " phone_number = :phoneNumber  where delivery_id = :deliveryId ";
 	private static final String UPDATE_STATUS = "update delivery set status = :status where lower(email) like lower(:email) ";
@@ -32,6 +32,8 @@ public class DeliveryRepository {
 	private static final String INSERT_DELIVERY = "insert into delivery (first_name, last_name, email, password, phone_number) values(:firstName,:lastName,:email,:password,:phoneNumber)";
 	private static final String DELETE_DELIVERY = "update delivery set deleted = 'true' where delivery_id = :deliveryId";
 	private static final String GET_DELIVERIES_EMAIL = "select email from delivery where deleted = false ";
+	
+	
 
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private JdbcTemplate jdbcTemplate;
@@ -66,7 +68,7 @@ public class DeliveryRepository {
 		this.namedParameterJdbcTemplate.update(UPDATE_STATUS, params);
 
 	}
-
+	
 	public void changeWorkingStatus(boolean working, String email) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("working", working);
@@ -114,4 +116,7 @@ public class DeliveryRepository {
 		return jdbcTemplate.queryForList(GET_DELIVERIES_EMAIL, String.class);
 	}
 
+	
+
+	
 }

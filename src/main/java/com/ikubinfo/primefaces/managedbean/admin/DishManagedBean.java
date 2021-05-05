@@ -81,6 +81,10 @@ public class DishManagedBean implements Serializable {
 	public void getDishNames() {
 		names = dishService.getDishNames(category, availability);
 	}
+	
+	public List<String> getSuggestions() {
+		return dishService.getCategories(null);
+	}
 
 	public void search() {
 		dishes = dishService.getAllDishes(category, dishName, availability);
