@@ -51,7 +51,7 @@ public class DeliveryRepository {
 
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("firstName", delivery.getFirstName()).addValue("lastName", delivery.getLastName())
-				.addValue("password", delivery.getPassword()).addValue("email", delivery.getEmail())
+				.addValue("password", delivery.getPassword()).addValue("email",delivery.getEmail())
 				.addValue("phoneNumber", delivery.getPhoneNumber()).addValue("deliveryId", delivery.getDeliveryId());
 
 		int updatedCount = this.namedParameterJdbcTemplate.update(UPDATE_DELIVERY, namedParameters);

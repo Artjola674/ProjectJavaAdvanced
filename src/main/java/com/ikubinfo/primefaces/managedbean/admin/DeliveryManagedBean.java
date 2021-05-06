@@ -67,7 +67,6 @@ public class DeliveryManagedBean implements Serializable {
 		if (deliveryService.delete(delivery.getDeliveryId())) {
 			deliveries = deliveryService.getAllDeliveries(status, working);
 			messages.showInfoMessage("Deleted");
-
 		} else {
 			messages.showInfoMessage("Something went wrong");
 		}
@@ -84,13 +83,22 @@ public class DeliveryManagedBean implements Serializable {
 		}
 	}
 
-	public void save() {
+	public int save() {
+		List<String> deliveriesEmail = deliveryService.getDeliveriesEmail();
+		for (String email : deliveriesEmail) {
+			if (delivery.getEmail().equalsIgnoreCase(email)) {
+				messages.showInfoMessage("Can not use this email because it belongs to another delivery");
+				deliveries = deliveryService.getAllDeliveries(status, working);
+				return 0;
+			}
+		}
 		if (deliveryService.save(delivery)) {
 			messages.showInfoMessage("Delivery was updated successfully");
 			delivery = new Delivery();
 		} else {
 			messages.showInfoMessage("Something went wrong");
 		}
+		return 0;
 	}
 
 	public DeliveryService getDeliveryService() {

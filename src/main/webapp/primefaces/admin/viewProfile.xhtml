@@ -85,14 +85,14 @@
 
 						<h:panelGrid columns="2">
 							<p:outputLabel for="firstName" value="First Name" />
-							<p:inputText id="firstName" required="true"
+							<p:inputText id="firstName" required="true" size="23"
 								value="#{adminProfileManagedBean.editAdmin.firstName}"
 								validatorMessage="First name should have only letters.">
 								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
 							</p:inputText>
 
 							<p:outputLabel for="lastName" value="Last Name" />
-							<p:inputText id="lastName" required="true"
+							<p:inputText id="lastName" required="true" size="23"
 								value="#{adminProfileManagedBean.editAdmin.lastName}"
 								validatorMessage="Last name should have only letters.">
 								<f:validateRegex pattern="[a-zA-Z]{2,30}" />
